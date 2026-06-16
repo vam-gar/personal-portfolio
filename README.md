@@ -2,7 +2,6 @@
 
 A personal portfolio for **Vamsi Garlapati** reimagined as a Discord server. Instead of a traditional scrolling page, recruiters and visitors navigate channels in a sidebar to explore education, experience, skills, and projects — and can chat with an AI assistant (**vamsi-bot**) grounded on Vamsi's real résumé.
 
-🔗 **LinkedIn:** https://www.linkedin.com/in/vamsi-garlapati/ · **GitHub:** https://github.com/vam-gar
 
 ---
 
