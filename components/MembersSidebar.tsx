@@ -11,7 +11,7 @@ export default function MembersSidebar() {
         <MemberRow
           initials="VG"
           name="Vamsi_Garlapati"
-          status="Playing: MS AI at UT Austin"
+          status="Playing: npm run dev"
           badgeColor="bg-discord-green"
         />
 
