@@ -122,17 +122,17 @@ export const PROJECTS: Record<string, Project> = {
   "ai-travel-planner": {
     id: "ai-travel-planner",
     subtitle:
-      "An automated full-stack itinerary generator powered by LLM orchestration.",
+      "An automated full-stack itinerary generator powered by the Gemini API.",
     title: "✈️ AI Travel Planner",
     description:
-      "A dynamic, full-stack web application that leverages LLM orchestration to generate highly customized, multi-day travel itineraries based on user destinations, budgets, and leisure preferences.",
+      "A dynamic, full-stack web application that integrates the Gemini API to generate highly customized, multi-day travel itineraries based on user destinations, budgets, and leisure preferences.",
     fields: [
       {
         name: "Focus",
-        value: "LLM Integration & Full-Stack Application Architecture",
+        value: "Gemini API Integration & Full-Stack Application Architecture",
       },
     ],
-    tags: ["Python", "Flask", "React.js", "Node.js", "OpenAI API", "Tailwind CSS"],
+    tags: ["Next.js", "React", "Gemini API", "Tailwind CSS", "Zod", "React-Leaflet"],
     github: "https://github.com/vam-gar/ai-travel-planner",
     accent: "#2ecc71",
   },

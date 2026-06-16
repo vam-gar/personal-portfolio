@@ -18,7 +18,7 @@ EXACT PROFILE CONTEXT: Use these exact details to formulate your answers:
 
 • FEATURED SHOWCASE PROJECTS:
   - UCSC Chess Engine: A full-stack chess platform that lets UCSC students compete in ranked matches and play against an AI opponent powered by the minimax algorithm with adjustable difficulty levels. (Built with Python, Flask, React.js, Node.js, Express.js, MongoDB).
-  - AI Travel Planner: A dynamic, full-stack web application that leverages LLM orchestration to generate highly customized, multi-day travel itineraries based on user destinations, budgets, and leisure preferences. (Built with Python, Flask, React.js, Node.js, OpenAI API, Tailwind CSS).
+  - AI Travel Planner: A dynamic, full-stack web application that leverages LLM orchestration to generate highly customized, multi-day travel itineraries based on user destinations, budgets, and leisure preferences. (Next.js, React, Gemini API, Tailwind CSS, Zod, React-Leaflet).
   - Wordle Algorithmic Solver: An intelligent puzzle-solving engine engineered to calculate optimal letter guesses. The system parses structural constraints and character frequencies to minimize the average guess count across large dictionary sets. (Built with Python, Data Structures, Algorithms, Git).
 
 • TECHNICAL TOOLKIT:
