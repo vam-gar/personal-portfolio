@@ -33,9 +33,13 @@ export type UiAction = {
   message: string;
 };
 
+// Where a tool's facts came from, for the source tags under a reply.
+export type Source = { name: string; url?: string };
+
 export type ToolResult = {
   response: Record<string, unknown>;
   action?: UiAction;
+  sources?: Source[];
 };
 
 export const TOOL_DECLARATIONS: FunctionDeclaration[] = [
@@ -111,6 +115,8 @@ export const TOOL_DECLARATIONS: FunctionDeclaration[] = [
   },
 ];
 
+const RESUME_SOURCE: Source = { name: "Resume" };
+
 const str = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
 async function searchKnowledge(args: Record<string, unknown>): Promise<ToolResult> {
@@ -136,6 +142,7 @@ async function searchKnowledge(args: Record<string, unknown>): Promise<ToolResul
       ...(hits.length === 0 ? { note: "No matching passages. The information may not be indexed." } : {}),
       ...(usedVectors ? {} : { note: "Semantic search was unavailable; keyword results only." }),
     },
+    sources: hits.map((h) => ({ name: h.chunk.title, url: h.chunk.url })),
   };
 }
 
@@ -146,6 +153,7 @@ function getResumeSection(args: Record<string, unknown>): ToolResult {
       response: {
         resume: index.resumeSections.map((s) => `${s.name}\n${s.text}`).join("\n\n"),
       },
+      sources: [RESUME_SOURCE],
     };
   }
   const section = index.resumeSections.find((s) => s.name === SECTION_ALIASES[key]);
@@ -154,20 +162,27 @@ function getResumeSection(args: Record<string, unknown>): ToolResult {
       response: { error: `Unknown section "${key}". Use one of: ${Object.keys(SECTION_ALIASES).join(", ")}, all.` },
     };
   }
-  return { response: { section: section.name, text: section.text } };
+  return {
+    response: { section: section.name, text: section.text },
+    sources: [RESUME_SOURCE],
+  };
 }
 
 async function getGithubStats(args: Record<string, unknown>): Promise<ToolResult> {
   const target = str(args.target, 60);
   try {
-    if (target === "profile") return { response: await getProfileStats(GITHUB_USER) };
+    if (target === "profile") {
+      const stats = await getProfileStats(GITHUB_USER);
+      return { response: stats, sources: [{ name: "GitHub (live)", url: stats.url }] };
+    }
     const repo = REPOS.get(target);
     if (!repo) {
       return {
         response: { error: `"${target}" is not an indexed repository. Available: ${Array.from(REPOS.keys()).join(", ")}, profile.` },
       };
     }
-    return { response: await getRepoStats(repo) };
+    const stats = await getRepoStats(repo);
+    return { response: stats, sources: [{ name: "GitHub (live)", url: stats.url }] };
   } catch (err) {
     return { response: { error: err instanceof Error ? err.message : "GitHub request failed." } };
   }

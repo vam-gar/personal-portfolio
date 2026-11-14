@@ -5,7 +5,8 @@
 
 const BASE = "https://generativelanguage.googleapis.com/v1beta";
 
-export const CHAT_MODEL = "gemini-3.8-flash";
+// GEMINI_MODEL overrides the chat model (evals, or a fallback during an outage).
+export const CHAT_MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
 export const EMBED_MODEL = "gemini-embedding-2";
 // gemini-embedding-2 auto-normalises truncated outputs at this size.
 export const EMBED_DIMS = 768;
@@ -67,10 +68,12 @@ export class GeminiError extends Error {
     this.name = "GeminiError";
   }
 
-  // Suggested wait from a 429 body ("... retry in 12.3s"), if present.
+  // Suggested wait from a 429 body. Per-minute limits say "retry in 12.3s";
+  // exhausted daily quotas say "retry in 9h26m54.07s".
   get retryAfterSecs(): number | null {
-    const m = this.detail.match(/retry in ([\d.]+)s/i)?.[1];
-    return m ? Math.ceil(Number(m)) : null;
+    const m = /retry in (?:(\d+)h)?(?:(\d+)m)?(?:([\d.]+)s)?/i.exec(this.detail);
+    if (!m || (!m[1] && !m[2] && !m[3])) return null;
+    return Math.ceil(Number(m[1] ?? 0) * 3600 + Number(m[2] ?? 0) * 60 + Number(m[3] ?? 0));
   }
 }
 
@@ -80,19 +83,35 @@ function requireKey(apiKey?: string): string {
   return key;
 }
 
+// 500/503 ("model is experiencing high demand") are usually momentary, so
+// they get two quick retries. 429s are not retried: the caller surfaces the
+// wait time instead.
+const RETRY_STATUSES = new Set([500, 503]);
+const RETRY_DELAYS_MS = [600, 1800];
+// A stalled connection must not hold a serverless function open.
+const REQUEST_TIMEOUT_MS = 30_000;
+
 async function post<T>(path: string, body: unknown, apiKey?: string): Promise<T> {
-  const r = await fetch(`${BASE}/${path}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      // Authenticate via the dedicated header so the AQ.-prefixed token is
-      // parsed as an API key (avoids gateway multi-credential 400 errors).
-      "x-goog-api-key": requireKey(apiKey),
-    },
-    body: JSON.stringify(body),
-  });
-  if (!r.ok) throw new GeminiError(r.status, await r.text());
-  return (await r.json()) as T;
+  const key = requireKey(apiKey);
+  for (let attempt = 0; ; attempt++) {
+    const r = await fetch(`${BASE}/${path}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Authenticate via the dedicated header so the AQ.-prefixed token is
+        // parsed as an API key (avoids gateway multi-credential 400 errors).
+        "x-goog-api-key": key,
+      },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    });
+    if (r.ok) return (await r.json()) as T;
+    const detail = await r.text();
+    if (!RETRY_STATUSES.has(r.status) || attempt >= RETRY_DELAYS_MS.length) {
+      throw new GeminiError(r.status, detail);
+    }
+    await new Promise((resolve) => setTimeout(resolve, RETRY_DELAYS_MS[attempt]));
+  }
 }
 
 export async function generateContent(
