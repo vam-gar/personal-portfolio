@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Content, GeminiError, extractText, generateContent } from "@/lib/gemini";
 
 // Grounding instruction for vamsi-bot. Kept verbatim so the model is
 // strictly scoped to Vamsi's professional profile.
@@ -29,8 +30,6 @@ EXACT PROFILE CONTEXT: Use these exact details to formulate your answers:
 
 GUARDRAIL POLICY: If a query is off-topic, respond with a variation of: 'I am only configured to answer questions regarding Vamsi's professional background, technical skills, and engineering projects. Please feel free to ask about his experiences at CVS Health, his current MS AI program at UT Austin, or his featured showcase applications!'`;
 
-const MODEL = "gemini-3.8-flash";
-
 type HistoryItem = { role: "user" | "bot"; text: string };
 
 export async function POST(req: NextRequest) {
@@ -57,46 +56,32 @@ export async function POST(req: NextRequest) {
   }
 
   // Build multi-turn context: prior history + the new user message.
-  const contents = [
+  const contents: Content[] = [
     ...history
       .filter((h) => h && h.text)
-      .map((h) => ({
+      .map((h): Content => ({
         role: h.role === "bot" ? "model" : "user",
         parts: [{ text: h.text }],
       })),
     { role: "user", parts: [{ text: message }] },
   ];
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
-
   try {
-    const r = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        // Authenticate via the dedicated header so the AQ.-prefixed token is
-        // parsed as an API key (avoids gateway multi-credential 400 errors).
-        "x-goog-api-key": apiKey,
-      },
-      body: JSON.stringify({
-        system_instruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
-        contents,
-        generationConfig: {
-          temperature: 1.0,
-          max_output_tokens: 2048,
-        },
-      }),
-    });
-
-    if (!r.ok) {
-      const detail = await r.text();
-      console.error("Gemini API error:", r.status, detail);
+    const data = await generateContent(
+      { systemInstruction: SYSTEM_INSTRUCTION, contents },
+      apiKey
+    );
+    const reply =
+      extractText(data) || "Sorry, I couldn't generate a response just now.";
+    return NextResponse.json({ reply });
+  } catch (err) {
+    if (err instanceof GeminiError) {
+      console.error("Gemini API error:", err.status, err.detail);
 
       // Surface rate-limit (429) clearly instead of a generic error, including
       // the suggested retry delay when Gemini provides one.
-      if (r.status === 429) {
-        const retry = detail.match(/retry in ([\d.]+)s/i)?.[1];
-        const secs = retry ? Math.ceil(Number(retry)) : null;
+      if (err.status === 429) {
+        const secs = err.retryAfterSecs;
         return NextResponse.json(
           {
             error: secs
@@ -113,15 +98,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const data = await r.json();
-    const reply: string =
-      data?.candidates?.[0]?.content?.parts
-        ?.map((p: { text?: string }) => p.text ?? "")
-        .join("")
-        .trim() || "Sorry, I couldn't generate a response just now.";
-
-    return NextResponse.json({ reply });
-  } catch (err) {
     console.error("Gemini request failed:", err);
     return NextResponse.json(
       { error: "Could not reach the model service." },
