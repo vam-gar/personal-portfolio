@@ -1,6 +1,6 @@
 {
   "caseId": "travel-coordinates",
-  "system": "agent",
+  "system": "agent-v1",
   "model": "gemini-3.5-flash-lite",
   "fingerprint": "d33b21232ee7",
   "ranAt": "2026-11-14T22:49:46.533Z",

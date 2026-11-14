@@ -1,10 +1,10 @@
 {
   "caseId": "cvs-role",
-  "system": "agent",
+  "system": "agent-v1",
   "model": "gemini-3.5-flash-lite",
   "fingerprint": "ab014da179dd",
   "ranAt": "2026-11-14T22:48:20.266Z",
-  "reply": "At CVS Health (July 2024 – July 2025, Remote), Vamsi worked as a Software Developer where he:\n\n* Built production Python REST APIs on Azure Functions for GAILE (CVS's internal conversational AI platform used by hundreds of employees), adding GPT-4 multimodal image analysis and summarization.\n* Worked directly with business stakeholders to gather requirements, demo releases, and fix user-reported issues.\n* Wrote telemetry endpoints storing user ratings, comments, and prompt metadata in Cosmos DB as a human-in-the-loop eval loop, which drove prompt fixes, surfaced bugs, and prioritized new features.\n* Wrote Python pipelines parsing multiple types of unstructured healthcare and enterprise forms (RFPs, medical records) into structured JSON for downstream LLM workflows, reducing manual data entry.\n* Automated the monthly healthcare data load, validating and backfilling 53,000+ records with unit tests.\n\n(Source: resume)",
+  "reply": "At CVS Health (July 2024 \u2013 July 2025, Remote), Vamsi worked as a Software Developer where he:\n\n* Built production Python REST APIs on Azure Functions for GAILE (CVS's internal conversational AI platform used by hundreds of employees), adding GPT-4 multimodal image analysis and summarization.\n* Worked directly with business stakeholders to gather requirements, demo releases, and fix user-reported issues.\n* Wrote telemetry endpoints storing user ratings, comments, and prompt metadata in Cosmos DB as a human-in-the-loop eval loop, which drove prompt fixes, surfaced bugs, and prioritized new features.\n* Wrote Python pipelines parsing multiple types of unstructured healthcare and enterprise forms (RFPs, medical records) into structured JSON for downstream LLM workflows, reducing manual data entry.\n* Automated the monthly healthcare data load, validating and backfilling 53,000+ records with unit tests.\n\n(Source: resume)",
   "steps": [
     {
       "tool": "get_resume_section",

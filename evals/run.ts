@@ -1,9 +1,12 @@
-// Eval runner: agentic RAG vs full-context prompting.
+// Eval runner: hybrid agent vs full-context prompting vs the first
+// (tools-only) agent.
 //
 //   npm run eval                    run what is missing, grade, write results.md
 //   npm run eval -- --only a,b      limit to some case ids
 //   npm run eval -- --report        no API calls; rebuild results.md from the cache
 //   npm run eval -- --no-judge      skip the groundedness judge
+//   npm run eval -- --keep-stale    reuse cached baseline answers even if the
+//                                   prompt has changed since (noted in the report)
 //
 // Every answer and every judgement is cached under evals/runs/. A quota or
 // timeout error stops the affected calls, the report is still written with
@@ -11,7 +14,10 @@
 //
 // Env: EVAL_MODEL (subject, default gemini-3.5-flash-lite), JUDGE_MODEL
 // (default gemini-4-hydrogen; must differ from the subject so they do not
-// share a free-tier quota), EVAL_EXTRA_MODEL (optional third column, agent only).
+// share a free-tier quota).
+//
+// evals/notes.md (hand-written: the decision and disclosures) is copied to
+// the top of results.md.
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
@@ -30,7 +36,6 @@ const option = (name: string) => {
 
 const SUBJECT_MODEL = process.env.EVAL_MODEL || "gemini-3.5-flash-lite";
 const JUDGE_MODEL = process.env.JUDGE_MODEL || "gemini-4-hydrogen";
-const EXTRA_MODEL = process.env.EVAL_EXTRA_MODEL || "";
 const PAUSE_MS = 6000; // between subject runs, to stay under per-minute limits
 const K_VALUES = [1, 3, 5];
 
@@ -67,20 +72,24 @@ async function main() {
   }
 
   const only = option("--only")?.split(",");
-  const cases = (JSON.parse(readFileSync(path.join(DIR, "cases.json"), "utf8")) as EvalCase[]).filter(
+  const allCases = (JSON.parse(readFileSync(path.join(DIR, "cases.json"), "utf8")) as EvalCase[]).filter(
     (c) => !only || only.includes(c.id)
   );
+  // Exact-term cases measure the retriever only; no answers are generated.
+  const cases = allCases.filter((c) => !c.retrievalOnly);
   const reportOnly = flag("--report");
   const useJudge = !flag("--no-judge");
+  const keepStale = flag("--keep-stale");
 
-  // Columns: the two systems on the subject model, plus an optional third.
-  const columns: { key: string; label: string; system: SystemName; model: string }[] = [
-    { key: `agent__${SUBJECT_MODEL}`, label: "Agentic RAG", system: "agent", model: SUBJECT_MODEL },
+  // `frozen` columns are never run: they show cached answers from a design
+  // whose code no longer exists.
+  type Column = { key: string; label: string; system: SystemName; model: string; frozen?: boolean };
+  const columns: Column[] = [
+    { key: `agent-v1__${SUBJECT_MODEL}`, label: "Tools-only agent (v1)", system: "agent-v1", model: SUBJECT_MODEL, frozen: true },
     { key: `baseline__${SUBJECT_MODEL}`, label: "Full context", system: "baseline", model: SUBJECT_MODEL },
+    { key: `agent__${SUBJECT_MODEL}`, label: "Hybrid agent", system: "agent", model: SUBJECT_MODEL },
   ];
-  if (EXTRA_MODEL) {
-    columns.push({ key: `agent__${EXTRA_MODEL}`, label: `Agentic RAG (${EXTRA_MODEL})`, system: "agent", model: EXTRA_MODEL });
-  }
+  let staleReused = 0;
 
   // ---- quota-aware call wrapper ----
   const exhausted = new Set<string>(); // models whose daily quota is gone
@@ -123,16 +132,22 @@ async function main() {
   for (const c of cases) {
     for (const col of columns) {
       const file = runFile(col.key, c.id);
-      const want = systems.fingerprint(col.system, col.model, c.question, c.history ?? []);
       const cached = readJson<RunRecord>(file);
-      if (cached && cached.fingerprint === want) {
+      if (col.system === "agent-v1") {
+        if (cached) records.set(`${col.key}/${c.id}`, cached);
+        continue;
+      }
+      const system = col.system;
+      const want = systems.fingerprint(system, col.model, c.question, c.history ?? []);
+      if (cached && (cached.fingerprint === want || (keepStale && system === "baseline"))) {
+        if (cached.fingerprint !== want) staleReused++;
         records.set(`${col.key}/${c.id}`, cached);
         continue;
       }
       if (reportOnly) continue;
-      console.log(`run   ${col.label.padEnd(14)} ${c.id}`);
+      console.log(`run   ${col.label.padEnd(22)} ${c.id}`);
       const rec = await guarded(col.model, `${col.key}/${c.id}`, () =>
-        systems.runSystem(col.system, col.model, c.id, c.question, c.history ?? [])
+        systems.runSystem(system, col.model, c.id, c.question, c.history ?? [])
       );
       if (rec) {
         writeJson(file, rec);
@@ -179,7 +194,7 @@ async function main() {
 
       // Refusals and contact drafts make no claims about Vamsi to ground.
       if (!useJudge || c.category === "refusal" || c.category === "contact") continue;
-      const evidence = c.category === "live-data" && col.system === "agent" ? live!.evidence : "";
+      const evidence = c.category === "live-data" && col.system !== "baseline" ? live!.evidence : "";
       const file = path.join(RUNS, `judge__${JUDGE_MODEL}`, `${col.key}__${c.id}.json`);
       const cached = readJson<Judgement>(file);
       if (cached && cached.replyHash === grading.replyHash(rec.reply, evidence)) {
@@ -187,7 +202,7 @@ async function main() {
         continue;
       }
       if (reportOnly) continue;
-      console.log(`judge ${col.label.padEnd(14)} ${c.id}`);
+      console.log(`judge ${col.label.padEnd(22)} ${c.id}`);
       const j = await guarded(JUDGE_MODEL, `judge ${col.key}/${c.id}`, () =>
         grading.judge(JUDGE_MODEL, c.question, rec.reply, evidence)
       );
@@ -202,48 +217,76 @@ async function main() {
   // ---- 4. retrieval hit@k on the raw question (no LLM involved) ----
   const embFile = path.join(RUNS, "query-embeddings.json");
   const embeddings = readJson<Record<string, number[]>>(embFile) ?? {};
-  const retrievalCases = cases.filter((c) => c.relevant?.length);
   type Ranker = "vector" | "keyword" | "hybrid";
-  const hits: Record<Ranker, Record<number, number>> = { vector: {}, keyword: {}, hybrid: {} };
-  const top5BySource = new Map<string, number>();
-  let retrievalN = 0;
-  const retrievalMisses: string[] = [];
+  const RANKERS: Ranker[] = ["vector", "keyword", "hybrid"];
+  const isReadme = (ch: { source: string }) => ch.source !== "resume";
+
+  // Relevant chunks: hand-labelled ids, or for exact-term cases every chunk
+  // whose text contains the term.
+  const relevantIds = (c: EvalCase): string[] =>
+    c.term
+      ? search.index.chunks.filter((ch) => new RegExp(c.term!, "i").test(ch.text)).map((ch) => ch.id)
+      : c.relevant ?? [];
+
+  const retrievalCases = allCases.filter((c) => relevantIds(c).length);
   for (const c of retrievalCases) {
-    if (!embeddings[c.question] && !reportOnly) {
-      try {
-        embeddings[c.question] = await embedQuery(c.question);
-        writeJson(embFile, embeddings);
-      } catch (err) {
-        problems.push(`query embedding for ${c.id} failed: ${err instanceof Error ? err.message : err}`);
+    if (embeddings[c.question] || reportOnly) continue;
+    try {
+      embeddings[c.question] = await embedQuery(c.question);
+      writeJson(embFile, embeddings);
+    } catch (err) {
+      problems.push(`query embedding for ${c.id} failed: ${err instanceof Error ? err.message : err}`);
+    }
+  }
+
+  type RetrievalStats = { n: number; hits: Record<Ranker, Record<number, number>>; mrr: Record<Ranker, number>; misses: string[] };
+  // readmeOnly mirrors what the shipped agent searches: resume chunks are
+  // removed from the pool and from the relevant set.
+  function retrievalStats(subset: EvalCase[], readmeOnly: boolean): RetrievalStats {
+    const stats: RetrievalStats = {
+      n: 0,
+      hits: { vector: {}, keyword: {}, hybrid: {} },
+      mrr: { vector: 0, keyword: 0, hybrid: 0 },
+      misses: [],
+    };
+    for (const c of subset) {
+      const emb = embeddings[c.question];
+      const byId = new Map(search.index.chunks.map((ch) => [ch.id, ch]));
+      const relevant = relevantIds(c).filter((id) => byId.has(id) && (!readmeOnly || isReadme(byId.get(id)!)));
+      if (!emb || !relevant.length) continue;
+      stats.n++;
+      const filter = readmeOnly ? isReadme : undefined;
+      const vector = search.vectorSearch(emb, 20, filter);
+      const keyword = search.keywordSearch(c.question, 20, filter);
+      const lists: Record<Ranker, string[]> = {
+        vector: vector.map((r) => r.chunk.id),
+        keyword: keyword.map((r) => r.chunk.id),
+        hybrid: search.fuse(vector, keyword, 20).map((h) => h.chunk.id),
+      };
+      for (const ranker of RANKERS) {
+        const rank = lists[ranker].findIndex((id) => relevant.includes(id)) + 1; // 0 = not found
+        stats.mrr[ranker] += rank ? 1 / rank : 0;
+        for (const k of K_VALUES) {
+          stats.hits[ranker][k] = (stats.hits[ranker][k] ?? 0) + (rank && rank <= k ? 1 : 0);
+        }
+        if (!rank || rank > 5) stats.misses.push(`${c.id} (${ranker})`);
       }
     }
+    return stats;
+  }
+
+  const top5BySource = new Map<string, number>();
+  for (const c of retrievalCases.filter((x) => !x.term)) {
     const emb = embeddings[c.question];
     if (!emb) continue;
-    retrievalN++;
-    const vector = search.vectorSearch(emb, 20);
-    const keyword = search.keywordSearch(c.question, 20);
-    const lists: Record<Ranker, string[]> = {
-      vector: vector.map((r) => r.chunk.id),
-      keyword: keyword.map((r) => r.chunk.id),
-      hybrid: search.fuse(vector, keyword, 20).map((h) => h.chunk.id),
-    };
-    for (const ranker of Object.keys(lists) as Ranker[]) {
-      for (const k of K_VALUES) {
-        const hit = lists[ranker].slice(0, k).some((id) => c.relevant!.includes(id));
-        hits[ranker][k] = (hits[ranker][k] ?? 0) + (hit ? 1 : 0);
-        if (!hit && k === 5) retrievalMisses.push(`${c.id} (${ranker})`);
-      }
-    }
-    for (const id of lists.hybrid.slice(0, 5)) {
-      const source = search.index.chunks.find((ch) => ch.id === id)!.title;
-      top5BySource.set(source, (top5BySource.get(source) ?? 0) + 1);
-    }
+    const fused = search.fuse(search.vectorSearch(emb, 20), search.keywordSearch(c.question, 20), 5);
+    for (const h of fused) top5BySource.set(h.chunk.title, (top5BySource.get(h.chunk.title) ?? 0) + 1);
   }
 
   // ---- 5. report ----
   const out: string[] = [];
   const done = (col: (typeof columns)[number]) => cases.filter((c) => grades.has(`${col.key}/${c.id}`));
-  const pendingRuns = columns.flatMap((col) =>
+  const pendingRuns = columns.filter((col) => !col.frozen).flatMap((col) =>
     cases.filter((c) => !records.has(`${col.key}/${c.id}`)).map((c) => `${col.label}: ${c.id}`)
   );
   const judgeable = (c: EvalCase) => c.category !== "refusal" && c.category !== "contact";
@@ -255,15 +298,30 @@ async function main() {
       )
     : [];
 
-  out.push("# Eval results: agentic RAG vs full-context prompting", "");
-  out.push(`Generated ${new Date().toISOString().slice(0, 10)} by \`npm run eval\`. Do not edit by hand.`, "");
+  out.push("# Eval results: hybrid agent vs full-context prompting", "");
   out.push(
-    `- **Subject model:** \`${SUBJECT_MODEL}\` for both systems, temperature 0.3, one run per case.`,
+    `Generated ${new Date().toISOString().slice(0, 10)} by \`npm run eval\`. Do not edit by hand; the Decision and disclosure sections come from \`evals/notes.md\`.`,
+    ""
+  );
+  const notesFile = path.join(DIR, "notes.md");
+  if (existsSync(notesFile)) out.push(readFileSync(notesFile, "utf8").trim(), "");
+  out.push("## Setup", "");
+  out.push(
+    "- **Hybrid agent:** the resume is in the system prompt; tools cover README search, live GitHub stats and contact drafts. This is the design in the code.",
+    "- **Full context:** the resume and all three READMEs are in the system prompt; no tools.",
+    "- **Tools-only agent (v1):** the first design, with nothing in the prompt and a `get_resume_section` tool. Its code has been replaced; the column shows its cached answers and is never re-run.",
+    `- **Subject model:** \`${SUBJECT_MODEL}\` for every system, temperature 0.3, one run per case.`,
     `- **Judge model:** \`${JUDGE_MODEL}\`, used only for groundedness.`,
-    `- **Cases:** ${cases.length} (${Array.from(new Set(cases.map((c) => c.category))).join(", ")}).`,
+    `- **Cases:** ${cases.length} answered (${Array.from(new Set(cases.map((c) => c.category))).join(", ")}), plus ${allCases.length - cases.length} exact-term queries used for retrieval only.`,
     `- **Corpus:** resume + 3 READMEs, ${search.index.chunks.length} chunks, about ${Math.round(systems.CORPUS.length / 4).toLocaleString("en-US")} tokens in full.`,
     ""
   );
+  if (staleReused) {
+    out.push(
+      `**Reused answers:** ${staleReused} full-context answers were generated before the evaluative-question rule was added to the shared prompt and were reused rather than re-run. Only the \`evaluative\` case exercises that rule, and it was run fresh.`,
+      ""
+    );
+  }
   if (pendingRuns.length || pendingJudge.length || problems.length) {
     out.push("## Incomplete run", "");
     out.push("Numbers below cover completed cases only. Run `npm run eval` again to fill in the rest; finished cases are cached.", "");
@@ -304,8 +362,8 @@ async function main() {
   out.push(row("Correct off-topic refusal", (col) => checkRate(col, "refusal")));
   out.push(row("Says so when sources lack the answer", (col) => checkRate(col, "declines")));
   out.push(row("Cites the expected source", (col) => checkRate(col, "cites")));
-  out.push(row("Calls an expected tool", (col) => (col.system === "agent" ? checkRate(col, "tool") : "n/a")));
-  out.push(row("No tools on off-topic", (col) => (col.system === "agent" ? checkRate(col, "no-tools") : "n/a")));
+  out.push(row("Calls an expected tool", (col) => (col.system !== "baseline" ? checkRate(col, "tool") : "n/a")));
+  out.push(row("No tools on off-topic", (col) => (col.system !== "baseline" ? checkRate(col, "no-tools") : "n/a")));
   out.push(row(`Groundedness: fully grounded (judge)`, (col) => {
     const js = done(col).map((c) => judgements.get(`${col.key}/${c.id}`)).filter((j): j is Judgement => Boolean(j));
     const g = js.filter((j) => j.verdict === "grounded").length;
@@ -362,32 +420,42 @@ async function main() {
   for (const c of cases) {
     const g = columns.map((col) => {
       const gr = grades.get(`${col.key}/${c.id}`);
-      return gr ? (gr.pass ? "✅" : `❌ ${gr.checks.filter((k) => !k.pass).map((k) => k.name).join(", ")}`) : "pending";
+      return gr ? (gr.pass ? "✅" : `❌ ${gr.checks.filter((k) => !k.pass).map((k) => k.name).join(", ")}`) : col.frozen ? "not run" : "pending";
     });
     const j = columns.map((col) => {
       if (!judgeable(c)) return "n/a";
       const ju = judgements.get(`${col.key}/${c.id}`);
-      return ju ? verdictMark[ju.verdict] : "pending";
+      return ju ? verdictMark[ju.verdict] : records.has(`${col.key}/${c.id}`) ? "pending" : "–";
     });
     out.push(`| ${c.id} | ${c.category} | ${g.join(" | ")} | ${j.join(" | ")} |`);
   }
   out.push("");
 
   // Retrieval.
+  const natural = retrievalCases.filter((c) => !c.term);
+  const exact = retrievalCases.filter((c) => c.term);
+  const names: Record<Ranker, string> = { vector: "Vector (cosine)", keyword: "Keyword (BM25)", hybrid: "Hybrid (RRF)" };
+  const retrievalTable = (title: string, st: RetrievalStats) => {
+    out.push(`**${title}** (${st.n} queries)`, "");
+    out.push(`| Ranker | ${K_VALUES.map((k) => `hit@${k}`).join(" | ")} | MRR |`, `| --- | ${K_VALUES.map(() => "---:").join(" | ")} | ---: |`);
+    for (const ranker of RANKERS) {
+      out.push(
+        `| ${names[ranker]} | ${K_VALUES.map((k) => (st.n ? `${st.hits[ranker][k] ?? 0}/${st.n}` : "–")).join(" | ")} | ${st.n ? (st.mrr[ranker] / st.n).toFixed(2) : "–"} |`
+      );
+    }
+    out.push("", st.misses.length ? `Not in the top 5: ${st.misses.join(", ")}.` : "No misses at k=5.", "");
+  };
   out.push("## Retrieval hit@k", "");
   out.push(
-    `Whether a chunk that answers the question appears in the top k, using the visitor's question verbatim as the query (${retrievalN} cases with labelled chunks). This isolates the retriever; the agent usually rewrites the query and can search more than once, so its effective retrieval differs.`,
+    "Whether a chunk that answers the query appears in the top k, using the query verbatim, with no LLM involved. MRR is the mean of 1/rank of the first relevant chunk. For exact-term queries, every chunk containing the term counts as relevant. The agent usually rewrites the query and can search more than once, so its effective retrieval differs.",
     ""
   );
-  out.push(`| Ranker | ${K_VALUES.map((k) => `hit@${k}`).join(" | ")} |`, `| --- | ${K_VALUES.map(() => "---:").join(" | ")} |`);
-  const names: Record<Ranker, string> = { vector: "Vector (cosine)", keyword: "Keyword (BM25)", hybrid: "Hybrid (RRF)" };
-  for (const ranker of ["vector", "keyword", "hybrid"] as Ranker[]) {
-    out.push(
-      `| ${names[ranker]} | ${K_VALUES.map((k) => (retrievalN ? `${pct((hits[ranker][k] ?? 0) / retrievalN)} (${hits[ranker][k] ?? 0}/${retrievalN})` : "–")).join(" | ")} |`
-    );
-  }
-  out.push("");
-  if (retrievalMisses.length) out.push(`Misses at k=5: ${retrievalMisses.join(", ")}.`, "");
+  out.push("### Whole index (resume + READMEs)", "");
+  retrievalTable("Natural-language questions", retrievalStats(natural, false));
+  retrievalTable("Exact-term queries", retrievalStats(exact, false));
+  out.push("### README chunks only (what the hybrid agent's search_knowledge covers)", "");
+  retrievalTable("Natural-language questions", retrievalStats(natural, true));
+  retrievalTable("Exact-term queries", retrievalStats(exact, true));
   if (top5BySource.size) {
     const total = Array.from(top5BySource.values()).reduce((a, b) => a + b, 0);
     const share = Array.from(top5BySource.entries())
@@ -396,7 +464,7 @@ async function main() {
         const chunks = search.index.chunks.filter((c) => c.title === s).length;
         return `${s} ${pct(n / total)} of top-5 slots (${pct(chunks / search.index.chunks.length)} of the index)`;
       });
-    out.push(`Share of hybrid top-5 slots by source: ${share.join("; ")}.`, "");
+    out.push(`Share of hybrid top-5 slots by source, whole index, natural-language questions: ${share.join("; ")}.`, "");
   }
 
   // Failures.
@@ -432,7 +500,7 @@ async function main() {
     `- ${cases.length} cases and a single run per case: differences of one or two cases are within noise. Treat this as a regression check, not a benchmark.`,
     "- Pass/fail comes from regex checks written before the run (expected facts, forbidden claims, refusal and \"not covered\" wording, tool and source use). They can miss a correct answer phrased unusually; failing replies are printed above so each can be read.",
     "- The judge sees the full corpus as the reference for both systems, so groundedness is scored against the same evidence.",
-    "- The live-data and contact cases need tools, which the full-context baseline does not have. Its expected behaviour there is to say it has no live data and to point to #contact-form.",
+    "- The live-data and contact cases need tools, which the full-context baseline does not have. Its expected behaviour there is to say it has no live data and to point to #contact-form, so a pass in those rows means a correct decline, not an equivalent answer.",
     ""
   );
 

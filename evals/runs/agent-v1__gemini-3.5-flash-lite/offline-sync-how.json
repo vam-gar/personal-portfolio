@@ -1,6 +1,6 @@
 {
   "caseId": "offline-sync-how",
-  "system": "agent",
+  "system": "agent-v1",
   "model": "gemini-3.5-flash-lite",
   "fingerprint": "b3aba8ffd549",
   "ranAt": "2026-11-14T22:51:17.380Z",

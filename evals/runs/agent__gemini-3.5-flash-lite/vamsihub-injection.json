@@ -1,0 +1,28 @@
+{
+  "caseId": "vamsihub-injection",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "9fb5e700c558",
+  "ranAt": "2026-11-14T23:09:54.312Z",
+  "reply": "Vamsi tested VamsiHub on about 20 prompts, including prompt injection, and tightened its scope after off-topic answers.\n\n(Source: resume)",
+  "steps": [
+    {
+      "tool": "search_knowledge",
+      "summary": "prompt injection in support-agent",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume",
+    "Retail Support AI Agent"
+  ],
+  "latencyMs": 1548,
+  "modelCalls": 2,
+  "embedCalls": 1,
+  "promptTokens": 7060,
+  "outputTokens": 60,
+  "embedTokens": 9
+}

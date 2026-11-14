@@ -1,6 +1,6 @@
 {
   "caseId": "pydantic-vs-langgraph",
-  "system": "agent",
+  "system": "agent-v1",
   "model": "gemini-3.5-flash-lite",
   "fingerprint": "0703a3f647c9",
   "ranAt": "2026-11-14T22:49:30.918Z",

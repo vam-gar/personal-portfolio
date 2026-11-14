@@ -1,10 +1,10 @@
 {
   "caseId": "education",
-  "system": "agent",
+  "system": "agent-v1",
   "model": "gemini-3.5-flash-lite",
   "fingerprint": "d626d9896485",
   "ranAt": "2026-11-14T22:47:33.304Z",
-  "reply": "Vamsi studied at:\n\n* **University of Texas at Austin** — Master of Science in Artificial Intelligence (Online/Part Time, Austin, TX), with an expected graduation in **May 2027**.\n* **University of California at Santa Cruz** — Bachelor of Science in Computer Science (Santa Cruz, CA), which he completed in March 2024.\n\n(Source: resume)",
+  "reply": "Vamsi studied at:\n\n* **University of Texas at Austin** \u2014 Master of Science in Artificial Intelligence (Online/Part Time, Austin, TX), with an expected graduation in **May 2027**.\n* **University of California at Santa Cruz** \u2014 Bachelor of Science in Computer Science (Santa Cruz, CA), which he completed in March 2024.\n\n(Source: resume)",
   "steps": [
     {
       "tool": "get_resume_section",

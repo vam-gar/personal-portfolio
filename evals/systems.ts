@@ -1,8 +1,11 @@
-// The two systems under test. Both run the same model with the same
-// persona, grounding and guardrail rules; only how knowledge reaches the
-// model differs.
-//   agent     agentic RAG: function calling over hybrid retrieval + tools
+// The systems under test. All run the same model with the same persona,
+// grounding and guardrail rules; only how knowledge reaches the model differs.
+//   agent     hybrid: resume in the system prompt, tools for README search,
+//             live GitHub stats and contact drafts
 //   baseline  full-context prompting: every document inlined, no tools
+//   agent-v1  the first design: nothing in the prompt, four tools including
+//             get_resume_section. Its code is gone; its cached answers are
+//             kept as a frozen column for comparison.
 
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
@@ -12,7 +15,7 @@ import { buildFullContextPrompt, buildSystemPrompt } from "../lib/agent/prompt";
 import { TOOL_DECLARATIONS } from "../lib/agent/tools";
 import { Content, extractText, generateContent } from "../lib/gemini";
 
-export type SystemName = "agent" | "baseline";
+export type SystemName = "agent" | "baseline" | "agent-v1";
 
 export type HistoryTurn = { role: "user" | "bot"; text: string };
 
@@ -44,7 +47,7 @@ const sha = (s: string) => createHash("sha1").update(s).digest("hex").slice(0, 1
 // Changes whenever anything that could change the answer changes, so stale
 // cached runs are detected and redone.
 export function fingerprint(
-  system: SystemName,
+  system: Exclude<SystemName, "agent-v1">,
   model: string,
   question: string,
   history: HistoryTurn[]
@@ -60,7 +63,7 @@ const toContents = (history: HistoryTurn[]): Content[] =>
   history.map((h) => ({ role: h.role === "bot" ? "model" : "user", parts: [{ text: h.text }] }));
 
 export async function runSystem(
-  system: SystemName,
+  system: Exclude<SystemName, "agent-v1">,
   model: string,
   caseId: string,
   question: string,

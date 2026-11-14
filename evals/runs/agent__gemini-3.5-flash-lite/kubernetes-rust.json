@@ -1,0 +1,21 @@
+{
+  "caseId": "kubernetes-rust",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "51187ce9ba98",
+  "ranAt": "2026-11-14T23:10:16.508Z",
+  "reply": "Vamsi's resume and project documentation do not list experience with Kubernetes or Rust. \n\n(Source: resume)",
+  "steps": [],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume"
+  ],
+  "latencyMs": 859,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 2478,
+  "outputTokens": 25,
+  "embedTokens": 0
+}

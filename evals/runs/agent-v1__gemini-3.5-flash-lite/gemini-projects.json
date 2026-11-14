@@ -1,6 +1,6 @@
 {
   "caseId": "gemini-projects",
-  "system": "agent",
+  "system": "agent-v1",
   "model": "gemini-3.5-flash-lite",
   "fingerprint": "e42af96c84ee",
   "ranAt": "2026-11-14T22:50:17.470Z",

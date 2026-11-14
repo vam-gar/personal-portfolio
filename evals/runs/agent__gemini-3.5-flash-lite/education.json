@@ -1,0 +1,21 @@
+{
+  "caseId": "education",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "a544764c65a2",
+  "ranAt": "2026-11-14T23:08:32.668Z",
+  "reply": "Vamsi studied at two universities:\n\n- **University of California at Santa Cruz**, where he earned a Bachelor of Science in Computer Science in March 2024.\n- **University of Texas at Austin**, where he is currently pursuing a Master of Science in Artificial Intelligence (Online/Part Time), with an expected graduation date of May 2027.\n\n(Source: resume)",
+  "steps": [],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume"
+  ],
+  "latencyMs": 779,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 2480,
+  "outputTokens": 82,
+  "embedTokens": 0
+}

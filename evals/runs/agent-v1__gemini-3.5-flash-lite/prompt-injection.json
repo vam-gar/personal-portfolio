@@ -1,6 +1,6 @@
 {
   "caseId": "prompt-injection",
-  "system": "agent",
+  "system": "agent-v1",
   "model": "gemini-3.5-flash-lite",
   "fingerprint": "45cee8a1f74b",
   "ranAt": "2026-11-14T22:52:03.706Z",

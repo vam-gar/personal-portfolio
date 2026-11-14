@@ -1,0 +1,29 @@
+{
+  "caseId": "travel-coordinates",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "5f2b74835137",
+  "ranAt": "2026-11-14T23:09:09.622Z",
+  "reply": "Because `streamObject` validates the entire object at once, enforcing strict latitude and longitude bounds directly inside the Zod schema would cause the system to reject an entire itinerary if just a single number is bad. \n\nFiltering coordinates at render time in `ItineraryView` keeps validation failures local, resulting in a single missing map pin rather than an empty screen.\n\n(Sources: resume, AI Travel Planner README)",
+  "steps": [
+    {
+      "tool": "search_knowledge",
+      "summary": "coordinates validate render time Zod schema AI Travel Planner in ai-travel-planner",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Resume",
+    "AI Travel Planner"
+  ],
+  "retrievedSources": [
+    "Resume",
+    "AI Travel Planner"
+  ],
+  "latencyMs": 1769,
+  "modelCalls": 2,
+  "embedCalls": 1,
+  "promptTokens": 6490,
+  "outputTokens": 118,
+  "embedTokens": 21
+}

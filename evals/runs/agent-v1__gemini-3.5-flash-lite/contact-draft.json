@@ -1,6 +1,6 @@
 {
   "caseId": "contact-draft",
-  "system": "agent",
+  "system": "agent-v1",
   "model": "gemini-3.5-flash-lite",
   "fingerprint": "d9d778a391fc",
   "ranAt": "2026-11-14T22:52:32.544Z",

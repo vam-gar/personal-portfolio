@@ -24,6 +24,8 @@ export type EvalCase = {
   expect: Expect;
   expectBaseline?: Expect; // replaces `expect` for the baseline where the two differ
   relevant?: string[]; // chunk ids that answer the question (retrieval hit@k)
+  term?: string; // exact-term cases: every chunk matching this regex is relevant
+  retrievalOnly?: boolean; // measured for retrieval only; no answer is generated
 };
 
 export type Check = { name: string; pass: boolean; detail?: string };
@@ -37,7 +39,7 @@ export type Grade = {
 const REFUSAL = /only configured to answer/i;
 // "isn't listed", "does not mention", "no information", "level of detail available"...
 const DECLINES =
-  /\b(isn't|is not|aren't|are not|not|no|doesn't|does not|don't|do not|neither|nor|cannot|can't|unable)\b[^.\n]{0,90}\b(list|mention|cover|document|includ|specif|stat|provid|availab|detail|inform|describ|indicat|found|give|access|live|real-time|look)|level of detail/i;
+  /\b(isn't|is not|aren't|are not|not|no|doesn't|does not|don't|do not|neither|nor|cannot|can't|unable)\b[^.\n]{0,90}\b(list|mention|cover|document|includ|contain|specif|stat|provid|availab|detail|inform|describ|indicat|found|give|access|live|real-time|look)|level of detail/i;
 
 const rx = (pattern: string) => new RegExp(pattern, "i");
 
@@ -88,8 +90,8 @@ export function grade(r: RunRecord, e: Expect): Grade {
     });
   }
 
-  // Tool expectations only exist for the agent.
-  if (r.system === "agent") {
+  // Tool expectations only exist for the agents.
+  if (r.system !== "baseline") {
     const used = r.steps.map((s) => s.tool);
     if (e.tools?.length) {
       checks.push({
