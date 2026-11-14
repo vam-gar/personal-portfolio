@@ -1,0 +1,29 @@
+{
+  "caseId": "support-evals",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "d4a68f50c06d",
+  "ranAt": "2026-11-14T23:25:58.926Z",
+  "reply": "The live benchmark evaluation results comparing System Prompt V1 (baseline policy list with broad escalation) and System Prompt V2 (hardened prompt with escalation hierarchy, reason taxonomy, and 6-step decision procedure) across 12 tau-bench-style scenarios are as follows:\n\n**Headline Metrics:**\n* **Task Success Rate (SR):** V1: 75.0% → V2: 100.0% (+25.0%)\n* **Constraint Adherence Rate (CAR):** V1: 91.7% → V2: 100.0% (+8.3%)\n* **Tool-Call Precision:** V1: 90.0% → V2: 95.0% (+5.0%)\n* **Escalation Accuracy:** V1: 83.3% → V2: 100.0% (+16.7%)\n\n**Secondary Metrics:**\n* **Tool-call check pass rate:** V1: 94.1% → V2: 100.0%\n* **Policy check pass rate:** V1: 98.8% → V2: 100.0%\n* **State check pass rate:** V1: 92.9% → V2: 100.0%\n* **Avg tool calls / scenario:** V1: 1.67 → V2: 1.67\n* **Scenarios with errors:** V1: 0 → V2: 0\n\n(Sources: resume, Retail Support AI Agent README)",
+  "steps": [
+    {
+      "tool": "search_knowledge",
+      "summary": "eval results V1 V2 success rate tau-bench in support-agent",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Resume",
+    "Retail Support AI Agent"
+  ],
+  "retrievedSources": [
+    "Resume",
+    "Retail Support AI Agent"
+  ],
+  "latencyMs": 2384,
+  "modelCalls": 2,
+  "embedCalls": 1,
+  "promptTokens": 7513,
+  "outputTokens": 381,
+  "embedTokens": 15
+}

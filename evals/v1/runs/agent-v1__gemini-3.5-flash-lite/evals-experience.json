@@ -1,0 +1,29 @@
+{
+  "caseId": "evals-experience",
+  "system": "agent-v1",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "0378741eb145",
+  "ranAt": "2026-11-14T22:50:32.715Z",
+  "reply": "In his projects, Vamsi built an evaluation framework for the **Retail Support AI Agent** styled after Sierra's tau-bench:\n\n- **Framework Structure:** A test suite of 12 multi-turn scenarios defined in `evals/scenarios.json` running against versioned system prompts.\n- **Grading Methodology:** Uses state-based grading (comparing the mock database and `AgentState` after the conversation), tool-call grading (checking required/forbidden tools, per-turn ordering constraints, and argument constraints like `discount_percent <= 20`), and light natural-language checks (affirmative-only regexes on replies).\n- **Results:** Used the eval harness in an Agent Development Life Cycle (ADLC) to iterate prompts, raising task success from 75% to 100% and escalation accuracy from 83% to 100%.\n\nHis resume does not list professional work experience building LLM evals outside of this project.\n\n(Sources: resume, Retail Support AI Agent README)",
+  "steps": [
+    {
+      "tool": "search_knowledge",
+      "summary": "eval",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Retail Support AI Agent",
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Retail Support AI Agent",
+    "Resume"
+  ],
+  "latencyMs": 1796,
+  "modelCalls": 2,
+  "embedCalls": 1,
+  "promptTokens": 4387,
+  "outputTokens": 233,
+  "embedTokens": 1
+}

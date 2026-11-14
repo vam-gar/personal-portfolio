@@ -1,0 +1,29 @@
+{
+  "caseId": "vamsihub-injection",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "b02c66984707",
+  "ranAt": "2026-11-14T23:26:44.308Z",
+  "reply": "Vamsi tested VamsiHub on about 20 prompts, including prompt injection, and tightened its scope after off-topic answers. The system handles off-topic questions and prompt-injection attempts with a polite redirect.\n\n(Sources: resume, VamsiHub README)",
+  "steps": [
+    {
+      "tool": "search_knowledge",
+      "summary": "VamsiHub prompt injection in personal-portfolio",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Resume",
+    "VamsiHub (this portfolio)"
+  ],
+  "retrievedSources": [
+    "Resume",
+    "VamsiHub (this portfolio)"
+  ],
+  "latencyMs": 1697,
+  "modelCalls": 2,
+  "embedCalls": 1,
+  "promptTokens": 6564,
+  "outputTokens": 87,
+  "embedTokens": 12
+}

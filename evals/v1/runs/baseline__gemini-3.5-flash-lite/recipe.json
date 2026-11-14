@@ -1,0 +1,17 @@
+{
+  "caseId": "recipe",
+  "system": "baseline",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "0cec990401ba",
+  "ranAt": "2026-11-14T22:47:54.987Z",
+  "reply": "I am only configured to answer questions regarding Vamsi's professional background, technical skills, and engineering projects. Please feel free to ask about his experiences at CVS Health, his current MS AI program at UT Austin, or his featured showcase applications!",
+  "steps": [],
+  "sources": [],
+  "retrievedSources": [],
+  "latencyMs": 1051,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 12516,
+  "outputTokens": 50,
+  "embedTokens": 0
+}

@@ -1,0 +1,21 @@
+{
+  "caseId": "followup-masters",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "dfd62815ce9c",
+  "ranAt": "2026-11-14T23:30:34.800Z",
+  "reply": "Vamsi is expected to finish his Master of Science in Artificial Intelligence at the University of Texas at Austin in May 2027, and it is an online and part-time program.\n\n(Source: resume)",
+  "steps": [],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume"
+  ],
+  "latencyMs": 550,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 2737,
+  "outputTokens": 46,
+  "embedTokens": 0
+}

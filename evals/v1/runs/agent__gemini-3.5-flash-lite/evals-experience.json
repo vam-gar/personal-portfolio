@@ -1,0 +1,21 @@
+{
+  "caseId": "evals-experience",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "73e020d93d60",
+  "ranAt": "2026-11-14T23:17:54.096Z",
+  "reply": "Vamsi has experience building evaluations for LLM systems both in his professional work at CVS Health and in his personal projects:\n\n* **CVS Health (Software Developer, Jul. 2024 – Jul. 2025):** \n  * Wrote telemetry endpoints that stored user ratings, comments, and prompt metadata in Cosmos DB to create a human-in-the-loop evaluation loop. \n  * This evaluation data was used to drive prompt fixes, surface bugs, and prioritize new features for GAILE, CVS's internal conversational AI platform.\n* **Retail Support AI Agent (Project, Oct. 2026):** \n  * Wrote a tau-bench-style evaluation framework consisting of 12 multi-turn scenarios graded on the final database state.\n  * Used this framework to iteratively refine prompts through the Agentic Development Lifecycle (ADLC), which raised task success from 75% to 100% and escalation accuracy from 83% to 100%.\n\n(Sources: resume, Retail Support AI Agent README)",
+  "steps": [],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume"
+  ],
+  "latencyMs": 1201,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 2512,
+  "outputTokens": 230,
+  "embedTokens": 0
+}

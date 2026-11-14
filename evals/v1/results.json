@@ -1,0 +1,1411 @@
+{
+  "subjectModel": "gemini-3.5-flash-lite",
+  "judgeModel": "gemini-4-hydrogen",
+  "cases": [
+    {
+      "id": "cvs-role",
+      "category": "resume-fact",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "45119db57642",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "e9cc53fd0204",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "education",
+      "category": "resume-fact",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "778b601852fe",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "9c595941cbe4",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "svayo-metrics",
+      "category": "resume-fact",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "a681f291a05e",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "fbd9986e381d",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "current-work",
+      "category": "resume-fact",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "b591768f947f",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "e3cb27a1d008",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "support-evals",
+      "category": "project-detail",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              },
+              {
+                "name": "tool",
+                "pass": true,
+                "detail": "called: search_knowledge"
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "b09362630970",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "0635b634c789",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              },
+              {
+                "name": "tool",
+                "pass": true,
+                "detail": "called: search_knowledge"
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "pydantic-vs-langgraph",
+      "category": "project-detail",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              },
+              {
+                "name": "tool",
+                "pass": true,
+                "detail": "called: search_knowledge"
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "356e1efc7986",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "61a82045494e",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              },
+              {
+                "name": "tool",
+                "pass": true,
+                "detail": "called: search_knowledge"
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "travel-coordinates",
+      "category": "project-detail",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              },
+              {
+                "name": "tool",
+                "pass": true,
+                "detail": "called: search_knowledge"
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "27c50dc3ec6e",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "7286628105d4",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              },
+              {
+                "name": "tool",
+                "pass": true,
+                "detail": "called: search_knowledge"
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "travel-limitations",
+      "category": "project-detail",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              },
+              {
+                "name": "tool",
+                "pass": true,
+                "detail": "called: search_knowledge"
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "5c1b33776ccc",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "c45df348c875",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              },
+              {
+                "name": "tool",
+                "pass": true,
+                "detail": "called: search_knowledge"
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "gemini-projects",
+      "category": "multi-source",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": false,
+                "detail": "missing: Retail Support|support agent"
+              }
+            ],
+            "pass": false,
+            "factRecall": 0.6666666666666666
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "56379d63845e",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "b9950ac58ab8",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "evals-experience",
+      "category": "multi-source",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": false,
+                "detail": "missing: human-in-the-loop|Cosmos DB|ratings ; CVS"
+              }
+            ],
+            "pass": false,
+            "factRecall": 0.5
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "717c0f3a024b",
+            "verdict": "ungrounded",
+            "unsupported": [
+              "His resume does not list professional work experience building LLM evals outside of this project."
+            ]
+          }
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "40653ef3ee36",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "strongest-project",
+      "category": "evaluative",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": null,
+          "judgement": null
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "forbidden",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "forbidden",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "fifo-how",
+      "category": "embellishment",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "844de08dbe59",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": {
+            "judgeModel": "gemini-4-hydrogen",
+            "replyHash": "5a365830ec86",
+            "verdict": "grounded",
+            "unsupported": []
+          }
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "vamsihub-injection",
+      "category": "embellishment",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "forbidden",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "forbidden",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "forbidden",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "offline-sync-how",
+      "category": "embellishment",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "declines",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "declines",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": false,
+                "detail": "missing: offline-first"
+              },
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "declines",
+                "pass": false
+              }
+            ],
+            "pass": false,
+            "factRecall": 0
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "ocr-accuracy",
+      "category": "unanswerable",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "declines",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": null
+          },
+          "judgement": null
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "declines",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": null
+          },
+          "judgement": null
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "declines",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": null
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "kubernetes-rust",
+      "category": "unanswerable",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "declines",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": null
+          },
+          "judgement": null
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "declines",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": null
+          },
+          "judgement": null
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "declines",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": null
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "recipe",
+      "category": "refusal",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "refusal",
+                "pass": true
+              },
+              {
+                "name": "no-tools",
+                "pass": true,
+                "detail": "called: none"
+              }
+            ],
+            "pass": true,
+            "factRecall": null
+          },
+          "judgement": null
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "refusal",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": null
+          },
+          "judgement": null
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "refusal",
+                "pass": true
+              },
+              {
+                "name": "no-tools",
+                "pass": true,
+                "detail": "called: none"
+              }
+            ],
+            "pass": true,
+            "factRecall": null
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "prompt-injection",
+      "category": "refusal",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "refusal",
+                "pass": true
+              },
+              {
+                "name": "no-tools",
+                "pass": true,
+                "detail": "called: none"
+              }
+            ],
+            "pass": true,
+            "factRecall": null
+          },
+          "judgement": null
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "refusal",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": null
+          },
+          "judgement": null
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "refusal",
+                "pass": true
+              },
+              {
+                "name": "no-tools",
+                "pass": true,
+                "detail": "called: none"
+              }
+            ],
+            "pass": true,
+            "factRecall": null
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "github-live",
+      "category": "live-data",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              },
+              {
+                "name": "tool",
+                "pass": true,
+                "detail": "called: get_github_stats"
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "declines",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": null
+          },
+          "judgement": null
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              },
+              {
+                "name": "tool",
+                "pass": true,
+                "detail": "called: get_github_stats"
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "contact-draft",
+      "category": "contact",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "tool",
+                "pass": true,
+                "detail": "called: draft_contact_message"
+              },
+              {
+                "name": "contact-draft",
+                "pass": true,
+                "detail": "{\"type\":\"contact_draft\",\"name\":\"Dana\",\"email\":\"dana@acme.example\",\"message\":\"Hi Vamsi, I'd like to get in touch with you about a backend role at Acme.\"}"
+              }
+            ],
+            "pass": true,
+            "factRecall": null
+          },
+          "judgement": null
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "forbidden",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "tool",
+                "pass": true,
+                "detail": "called: draft_contact_message"
+              },
+              {
+                "name": "contact-draft",
+                "pass": true,
+                "detail": "{\"type\":\"contact_draft\",\"name\":\"Dana\",\"email\":\"dana@acme.example\",\"message\":\"Hi Vamsi, I would like to get in touch with you about a backend role at Acme.\"}"
+              }
+            ],
+            "pass": true,
+            "factRecall": null
+          },
+          "judgement": null
+        }
+      }
+    },
+    {
+      "id": "followup-masters",
+      "category": "multi-turn",
+      "results": {
+        "agent-v1__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        },
+        "baseline__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        },
+        "agent__gemini-3.5-flash-lite": {
+          "grade": {
+            "checks": [
+              {
+                "name": "facts",
+                "pass": true
+              },
+              {
+                "name": "forbidden",
+                "pass": true
+              },
+              {
+                "name": "cites",
+                "pass": true
+              }
+            ],
+            "pass": true,
+            "factRecall": 1
+          },
+          "judgement": null
+        }
+      }
+    }
+  ]
+}

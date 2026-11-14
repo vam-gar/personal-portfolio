@@ -1,0 +1,29 @@
+{
+  "caseId": "travel-limitations",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "a97a09d2737d",
+  "ranAt": "2026-11-14T23:29:08.384Z",
+  "reply": "The known limitations of the AI Travel Planner are:\n\n- **Coordinates are model-generated:** The coordinate guard catches impossible and Null Island values, but a valid-but-slightly-wrong pin is inherent to LLM output. Real verification would require a reverse-geocode lookup per stop.\n- **In-memory rate limiter:** The rate limiter is in-memory and per-instance (fine for a demo, though Vercel recommends swapping it for `@upstash/ratelimit` with Redis if a hard global cap is needed).\n- **Desktop-first dashboard:** Below the `lg` breakpoint, the panels stack and scroll.\n\n(Sources: resume, AI Travel Planner README)",
+  "steps": [
+    {
+      "tool": "search_knowledge",
+      "summary": "limitations AI Travel Planner in ai-travel-planner",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Resume",
+    "AI Travel Planner"
+  ],
+  "retrievedSources": [
+    "Resume",
+    "AI Travel Planner"
+  ],
+  "latencyMs": 1949,
+  "modelCalls": 2,
+  "embedCalls": 1,
+  "promptTokens": 6534,
+  "outputTokens": 172,
+  "embedTokens": 13
+}

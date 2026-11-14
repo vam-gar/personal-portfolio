@@ -1,0 +1,30 @@
+{
+  "caseId": "fifo-how",
+  "system": "agent-v1",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "ac35b14b99ec",
+  "ranAt": "2026-11-14T22:50:47.953Z",
+  "reply": "The FIFO payment engine for Moksha Jewels settles the oldest invoices first through one transactional Postgres function with idempotent upserts.\n\n(Source: resume)",
+  "steps": [
+    {
+      "tool": "search_knowledge",
+      "summary": "FIFO payment engine Moksha Jewels",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume",
+    "AI Travel Planner",
+    "VamsiHub (this portfolio)",
+    "Retail Support AI Agent"
+  ],
+  "latencyMs": 1777,
+  "modelCalls": 2,
+  "embedCalls": 1,
+  "promptTokens": 4148,
+  "outputTokens": 50,
+  "embedTokens": 9
+}

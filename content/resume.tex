@@ -1,0 +1,206 @@
+%-------------------------
+% Resume in Latex
+% Author : Jake Gutierrez
+% Based off of: https://github.com/sb2nov/resume
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+
+%----------FONT OPTIONS----------
+% sans-serif
+% \usepackage[sfdefault]{FiraSans}
+% \usepackage[sfdefault]{roboto}
+% \usepackage[sfdefault]{noto-sans}
+% \usepackage[default]{sourcesanspro}
+
+% serif
+% \usepackage{CormorantGaramond}
+% \usepackage{charter}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%----------HEADING----------
+% \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+%   \textbf{\href{http://sourabhbajaj.com/}{\Large Sourabh Bajaj}} & Email : \href{mailto:sourabh@sourabhbajaj.com}{sourabh@sourabhbajaj.com}\\
+%   \href{http://sourabhbajaj.com/}{http://www.sourabhbajaj.com} & Mobile : +1-123-456-7890 \\
+% \end{tabular*}
+
+\begin{center}
+    \textbf{\Huge \scshape Vamsi Garlapati} \\ \vspace{1pt}
+    \small \href{mailto:vagarlapati@gmail.com}{\underline{vagarlapati@gmail.com}} $|$
+    \href{https://github.com/vam-gar}{\underline{github.com/vam-gar}} $|$
+    \href{https://vamsigarlapati.vercel.app}{\underline{vamsigarlapati.com}}
+\end{center}
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Freelance Software Developer}{Sep. 2026 -- Present}
+      {Moksha Jewels}{Fremont, CA}
+      \resumeItemListStart
+        \resumeItem{Shipped a \textbf{full-stack} vendor payables web app (\textbf{React}, \textbf{Supabase PostgreSQL}, Vercel) \textbf{used daily} by a diamond jewelry retailer to track supplier invoices, payments, landed costs, and vendor balances.}
+        \resumeItem{\textbf{Worked directly with the store owner} to gather requirements, then designed a \textbf{10-table relational schema} with row-level security, \textbf{role-based access control}, and \textbf{offline-first sync}.}
+        \resumeItem{Built an \textbf{OCR invoice-parsing pipeline} (pdf.js, Tesseract) and a FIFO payment engine that settles the oldest invoices first through one \textbf{transactional} Postgres function with \textbf{idempotent} upserts.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Software Developer}{Jul. 2024 -- Jul. 2025}
+      {CVS Health}{Remote}
+      \resumeItemListStart
+        \resumeItem{Built \textbf{production Python REST APIs} on \textbf{Azure Functions} for GAILE, CVS's internal \textbf{conversational AI platform} used by \textbf{hundreds of employees}, adding GPT-4 multimodal image analysis and summarization.}
+        \resumeItem{Worked directly with \textbf{business stakeholders} to gather requirements, demo releases, and fix user-reported issues.}
+        \resumeItem{Wrote telemetry endpoints storing user ratings, comments, and prompt metadata in \textbf{Cosmos DB} as a \textbf{human-in-the-loop eval loop}; the data drove \textbf{prompt fixes}, surfaced bugs, and prioritized new features.}
+        \resumeItem{Wrote Python pipelines parsing multiple types of unstructured healthcare and enterprise forms (RFPs, medical records) into \textbf{structured JSON} for downstream \textbf{LLM workflows}, reducing manual data entry.}
+        \resumeItem{Automated the monthly healthcare data load, validating and backfilling \textbf{53,000+ records} with unit tests.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Artificial Intelligence \& Machine Learning Intern}{Jul. 2023 -- Sep. 2023}
+      {SVAYO}{Remote}
+      \resumeItemListStart
+        \resumeItem{Trained custom CNN and YOLO models in \textbf{PyTorch} and \textbf{TensorFlow} for facial skin feature detection and acne classification, reaching \textbf{92\% detection accuracy}.}
+        \resumeItem{\textbf{Cut false positives by 15\%} through hyperparameter tuning and iterative \textbf{model evaluations}, and benchmarked \mbox{R-CNN}, Faster \mbox{R-CNN}, and YOLO on \textbf{latency} vs. accuracy for real-time inference.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+  %-----------PROJECTS-----------
+\section{Projects}
+    \resumeSubHeadingListStart
+      \resumeProjectHeading
+          {\textbf{Retail Support AI Agent} $|$ \emph{Python, PydanticAI, Gemini API, Claude API, Streamlit, Pytest}}{Oct. 2026}
+          \resumeItemListStart
+            \resumeItem{Built a \textbf{customer-facing support AI agent} with schema-validated \textbf{tool calling} for orders, returns, and retention offers, enforcing \textbf{policy guardrails} and a \textbf{human-handoff} circuit breaker in code, covered by \textbf{51 Pytest tests}.}
+            \resumeItem{Wrote a \textbf{tau-bench-style eval framework} of 12 multi-turn scenarios graded on final database state; iterated prompts through the \textbf{ADLC}, raising task success from \textbf{75\% to 100\%} and escalation accuracy from 83\% to 100\%.}
+          \resumeItemListEnd
+      \resumeProjectHeading
+          {\textbf{AI Travel Planner} $|$ \emph{Next.js, React, Gemini API, Tailwind CSS, Zod, React-Leaflet}}{Jun. 2026}
+          \resumeItemListStart
+            \resumeItem{Built a trip planner that validates Gemini itineraries with \textbf{Zod schemas}, retrying or flagging invalid responses.}
+            \resumeItem{Geocoded each itinerary location and plotted every day's route on an interactive Leaflet map.}
+          \resumeItemListEnd
+      \resumeProjectHeading
+          {\textbf{VamsiHub} $|$ \emph{Next.js, TypeScript, Gemini API, Formspree, Tailwind CSS, Vercel}}{Jun. 2026}
+          \resumeItemListStart
+            \resumeItem{Built and deployed a \textbf{conversational portfolio assistant} on Gemini 2.5 Flash, grounding answers in project and resume context through \textbf{system-prompt engineering}, with \textbf{multi-turn state} and \textbf{off-topic guardrails}.}
+            \resumeItem{\textbf{Tested it on about 20 prompts}, including \textbf{prompt injection}, and tightened its scope after off-topic answers.}
+          \resumeItemListEnd
+
+
+    \resumeSubHeadingListEnd
+
+%
+%-----------PROGRAMMING SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: Python, TypeScript, JavaScript, SQL, Go, Java, C++, C, HTML/CSS} \\
+\textbf{AI / LLM}{: AI Agents, Tool Calling, Evals, Prompt Engineering, Structured Outputs, Guardrails, LLM Observability, RAG, PydanticAI, LangChain, OpenAI/Gemini/Claude APIs} \\
+\textbf{Frameworks}{: Next.js, React, Node.js, Flask, Streamlit, Tailwind CSS, PyTorch, TensorFlow, Pytest} \\
+\textbf{Data and Infra}{: PostgreSQL, Supabase, MongoDB, Pinecone, Pandas, NumPy, Docker, Azure, Vercel, Git, Linux}
+    }}
+ \end{itemize}
+
+
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {University of Texas at Austin}{Austin, TX}
+      {Master of Science in Artificial Intelligence (Online/Part Time)}{Expected May 2027}
+    \resumeSubheading
+      {University of California at Santa Cruz}{Santa Cruz, CA}
+      {Bachelor of Science in Computer Science}{March 2024}
+  \resumeSubHeadingListEnd
+
+%-------------------------------------------
+\end{document}

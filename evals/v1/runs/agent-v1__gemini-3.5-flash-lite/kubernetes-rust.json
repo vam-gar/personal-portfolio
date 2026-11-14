@@ -1,0 +1,34 @@
+{
+  "caseId": "kubernetes-rust",
+  "system": "agent-v1",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "9df4c4a39234",
+  "ranAt": "2026-11-14T22:51:48.209Z",
+  "reply": "Vamsi's resume and project documentation do not mention experience with Kubernetes or Rust. His technical skills list includes Python, TypeScript, JavaScript, SQL, Go, Java, C++, C, HTML/CSS, Docker, and Azure, among other tools.\n\n(Source: resume)",
+  "steps": [
+    {
+      "tool": "get_resume_section",
+      "summary": "skills",
+      "ok": true
+    },
+    {
+      "tool": "search_knowledge",
+      "summary": "Kubernetes Rust",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume",
+    "AI Travel Planner",
+    "Retail Support AI Agent"
+  ],
+  "latencyMs": 1843,
+  "modelCalls": 3,
+  "embedCalls": 1,
+  "promptTokens": 5491,
+  "outputTokens": 94,
+  "embedTokens": 4
+}

@@ -1,0 +1,21 @@
+{
+  "caseId": "strongest-project",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "97a150d7b5b6",
+  "ranAt": "2026-11-14T23:18:01.304Z",
+  "reply": "Based on Vamsi's resume and project documentation, his strongest project is the **Retail Support AI Agent**. \n\nHere is why it stands out:\n- **Rigorous Engineering & Testing:** It features schema-validated tool calling, explicit policy guardrails, and a human-handoff circuit breaker implemented in code—backed by an extensive test suite of 51 Pytest tests.\n- **Data-Driven Iteration:** Vamsi built a tau-bench-style evaluation framework comprising 12 multi-turn scenarios graded on final database state. Using this setup, he iterated prompts through the Agent Development Lifecycle (ADLC) to measurably improve performance, raising task success from 75% to 100% and escalation accuracy from 83% to 100%.\n\n(Sources: resume, Retail Support AI Agent README)",
+  "steps": [],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume"
+  ],
+  "latencyMs": 1135,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 2499,
+  "outputTokens": 177,
+  "embedTokens": 0
+}

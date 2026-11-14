@@ -1,0 +1,21 @@
+{
+  "caseId": "svayo-metrics",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "637fbd0b88d4",
+  "ranAt": "2026-11-14T23:27:58.769Z",
+  "reply": "At SVAYO, Vamsi's custom CNN and YOLO models reached a **92% detection accuracy** for facial skin feature detection and acne classification. \n\nHe benchmarked the following architectures on latency versus accuracy for real-time inference:\n- R-CNN\n- Faster R-CNN\n- YOLO\n\n(Source: resume)",
+  "steps": [],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume"
+  ],
+  "latencyMs": 832,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 2690,
+  "outputTokens": 71,
+  "embedTokens": 0
+}

@@ -1,0 +1,27 @@
+{
+  "caseId": "current-work",
+  "system": "agent-v1",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "8a531a59f8dd",
+  "ranAt": "2026-11-14T22:48:49.520Z",
+  "reply": "Vamsi is currently working as a Freelance Software Developer at Moksha Jewels (since September 2026), where he shipped a full-stack vendor payables web app using React, Supabase PostgreSQL, and Vercel for tracking supplier invoices, payments, landed costs, and vendor balances. \n\n(Source: resume)",
+  "steps": [
+    {
+      "tool": "get_resume_section",
+      "summary": "experience",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume"
+  ],
+  "latencyMs": 1516,
+  "modelCalls": 2,
+  "embedCalls": 0,
+  "promptTokens": 3218,
+  "outputTokens": 87,
+  "embedTokens": 0
+}

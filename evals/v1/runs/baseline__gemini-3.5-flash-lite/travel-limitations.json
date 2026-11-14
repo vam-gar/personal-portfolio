@@ -1,0 +1,17 @@
+{
+  "caseId": "travel-limitations",
+  "system": "baseline",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "00be2f90388d",
+  "ranAt": "2026-11-14T22:50:10.138Z",
+  "reply": "The known limitations of the AI Travel Planner are:\n\n- Coordinates are model-generated: the guard catches impossible and Null-Island values, but a valid-but-slightly-wrong pin is inherent to LLM output (real verification would need a reverse-geocode lookup per stop).\n- The rate limiter is in-memory and per-instance (fine for a demo; swap for `@upstash/ratelimit` (Redis) if you need a hard global cap).\n- The dashboard is desktop-first; below `lg` the panels stack and scroll.\n\n(Source: AI Travel Planner README)",
+  "steps": [],
+  "sources": [],
+  "retrievedSources": [],
+  "latencyMs": 1326,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 12515,
+  "outputTokens": 125,
+  "embedTokens": 0
+}

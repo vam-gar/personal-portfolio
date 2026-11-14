@@ -1,0 +1,17 @@
+{
+  "caseId": "followup-masters",
+  "system": "baseline",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "3dace72507fc",
+  "ranAt": "2026-11-14T22:52:54.246Z",
+  "reply": "Vamsi expects to finish his Master of Science in Artificial Intelligence in May 2027. It is an online and part-time program.\n\n(Source: resume)",
+  "steps": [],
+  "sources": [],
+  "retrievedSources": [],
+  "latencyMs": 1007,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 12569,
+  "outputTokens": 37,
+  "embedTokens": 0
+}

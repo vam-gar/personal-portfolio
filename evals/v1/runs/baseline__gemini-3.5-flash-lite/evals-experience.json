@@ -1,0 +1,17 @@
+{
+  "caseId": "evals-experience",
+  "system": "baseline",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "be26bd669292",
+  "ranAt": "2026-11-14T22:50:40.515Z",
+  "reply": "Vamsi has experience building evaluations and telemetry loops for LLM systems both in his professional work and through his engineering projects:\n\n### At Work (CVS Health)\n- Wrote telemetry endpoints that stored user ratings, comments, and prompt metadata in Cosmos DB as part of a human-in-the-loop evaluation loop.\n- The collected data drove prompt fixes, surfaced bugs, and helped prioritize new features for GAILE, CVS's internal conversational AI platform used by hundreds of employees.\n*(Source: resume)*\n\n### In His Projects (Retail Support AI Agent)\n- Built a multi-turn evaluation framework modeled after Sierra's *tau-bench* methodology to benchmark prompt versions based on final database state rather than transcript reads.\n- The framework evaluates 12 multi-turn scenarios across four headline metrics (Task Success Rate, Constraint Adherence Rate, Tool-Call Precision, and Escalation Accuracy) and generates JSON and Markdown comparison reports.\n- Used the evaluation suite to run V1 versus V2 prompt comparisons (raising task success from 75.0% to 100.0% and escalation accuracy from 83.3% to 100.0%).\n- Wrote 51 offline Pytest tests covering tools, policy edge cases, the agent state machine, guardrails, and eval scoring with zero token cost.\n*(Sources: resume, Retail Support AI Agent README)*\n\nIf you would like to reach out to Vamsi directly to discuss his evaluation methodology further, please visit the `#contact-form` channel!",
+  "steps": [],
+  "sources": [],
+  "retrievedSources": [],
+  "latencyMs": 1434,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 12524,
+  "outputTokens": 325,
+  "embedTokens": 0
+}

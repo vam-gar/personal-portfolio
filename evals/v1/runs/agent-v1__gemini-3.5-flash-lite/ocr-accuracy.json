@@ -1,0 +1,28 @@
+{
+  "caseId": "ocr-accuracy",
+  "system": "agent-v1",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "661f605007e8",
+  "ranAt": "2026-11-14T22:51:33.192Z",
+  "reply": "Vamsi's resume and project docs do not state an accuracy metric for the OCR invoice-parsing pipeline he built for Moksha Jewels. The available documentation only notes that he built the pipeline using `pdf.js` and `Tesseract`.\n\n(Source: resume)",
+  "steps": [
+    {
+      "tool": "search_knowledge",
+      "summary": "Moksha Jewels OCR invoice-parsing pipeline accuracy",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume",
+    "Retail Support AI Agent"
+  ],
+  "latencyMs": 1807,
+  "modelCalls": 2,
+  "embedCalls": 1,
+  "promptTokens": 4196,
+  "outputTokens": 81,
+  "embedTokens": 13
+}

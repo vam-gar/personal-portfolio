@@ -1,0 +1,17 @@
+{
+  "caseId": "current-work",
+  "system": "baseline",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "4af53ad0879c",
+  "ranAt": "2026-11-14T22:48:57.042Z",
+  "reply": "Vamsi is currently working as a Freelance Software Developer for Moksha Jewels in Fremont, CA (since September 2026), where he shipped a full-stack vendor payables web app used daily to track supplier invoices, payments, landed costs, and vendor balances.\n\n(Source: resume)",
+  "steps": [],
+  "sources": [],
+  "retrievedSources": [],
+  "latencyMs": 1138,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 12512,
+  "outputTokens": 63,
+  "embedTokens": 0
+}

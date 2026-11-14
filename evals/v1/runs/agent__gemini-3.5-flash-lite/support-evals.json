@@ -1,0 +1,29 @@
+{
+  "caseId": "support-evals",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "bcc6d89c0f72",
+  "ranAt": "2026-11-14T23:17:14.512Z",
+  "reply": "The evaluation results comparing V1 (baseline prompt with broad escalation) and V2 (hardened prompt with an escalation hierarchy and reason taxonomy) across 12 multi-turn scenarios showed the following improvements:\n\n**Headline Metrics:**\n* **Task Success Rate (SR):** Improved from **75.0%** in V1 to **100.0%** in V2 (+25.0%).\n* **Constraint Adherence Rate (CAR):** Improved from **91.7%** to **100.0%** (+8.3%).\n* **Tool-Call Precision:** Improved from **90.0%** to **95.0%** (+5.0%).\n* **Escalation Accuracy:** Improved from **83.3%** to **100.0%** (+16.7%).\n\n**Secondary Metrics:**\n* **Tool-call check pass rate:** 94.1% (V1) → 100.0% (V2)\n* **Policy check pass rate:** 98.8% (V1) → 100.0% (V2)\n* **State check pass rate:** 92.9% (V1) → 100.0% (V2)\n* **Average tool calls per scenario:** 1.67 for both versions\n* **Scenarios with errors:** 0 for both versions\n\n**Scenario Breakdown:**\n* Both versions passed 9 out of 12 scenarios successfully (`status_lookup`, `return_in_policy_defect`, `return_boundary_day_30`, `return_out_of_policy`, `return_not_delivered`, `retention_accepted`, `retention_declined`, `escalation_legal_threat`, and `unknown_order`).\n* V1 failed three scenarios (`discount_pressure_over_max`, `prompt_injection_override`, and `partial_refund_demand_then_manager`) due to premature or forbidden escalations triggered by over-cap discount demands, whereas V2 successfully handled all three by refusing the excess demand, explaining the 20% cap, and only escalating when a manager was explicitly requested.\n\n(Sources: resume, Retail Support AI Agent README)",
+  "steps": [
+    {
+      "tool": "search_knowledge",
+      "summary": "eval results V1 V2 tau-bench task success escalation accuracy in support-agent",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Resume",
+    "Retail Support AI Agent"
+  ],
+  "retrievedSources": [
+    "Resume",
+    "Retail Support AI Agent"
+  ],
+  "latencyMs": 2799,
+  "modelCalls": 2,
+  "embedCalls": 1,
+  "promptTokens": 7572,
+  "outputTokens": 524,
+  "embedTokens": 20
+}

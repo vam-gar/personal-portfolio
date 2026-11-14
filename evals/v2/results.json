@@ -1,0 +1,1477 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "trials": 3,
+  "cases": [
+    {
+      "id": "cvs-role",
+      "category": "resume-fact",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "education",
+      "category": "resume-fact",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "svayo-metrics",
+      "category": "resume-fact",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "current-work",
+      "category": "resume-fact",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "support-evals",
+      "category": "project-detail",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            },
+            {
+              "name": "tool",
+              "pass": true,
+              "detail": "called: search_knowledge"
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            },
+            {
+              "name": "tool",
+              "pass": true,
+              "detail": "called: search_knowledge"
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            },
+            {
+              "name": "tool",
+              "pass": true,
+              "detail": "called: search_knowledge"
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "pydantic-vs-langgraph",
+      "category": "project-detail",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            },
+            {
+              "name": "tool",
+              "pass": true,
+              "detail": "called: search_knowledge"
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            },
+            {
+              "name": "tool",
+              "pass": true,
+              "detail": "called: search_knowledge"
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            },
+            {
+              "name": "tool",
+              "pass": true,
+              "detail": "called: search_knowledge"
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "travel-coordinates",
+      "category": "project-detail",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            },
+            {
+              "name": "tool",
+              "pass": true,
+              "detail": "called: search_knowledge"
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            },
+            {
+              "name": "tool",
+              "pass": true,
+              "detail": "called: search_knowledge"
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            },
+            {
+              "name": "tool",
+              "pass": true,
+              "detail": "called: search_knowledge"
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "travel-limitations",
+      "category": "project-detail",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            },
+            {
+              "name": "tool",
+              "pass": true,
+              "detail": "called: search_knowledge"
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            },
+            {
+              "name": "tool",
+              "pass": true,
+              "detail": "called: search_knowledge"
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            },
+            {
+              "name": "tool",
+              "pass": true,
+              "detail": "called: search_knowledge"
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "gemini-projects",
+      "category": "multi-source",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "evals-experience",
+      "category": "multi-source",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "strongest-project",
+      "category": "evaluative",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "fifo-how",
+      "category": "embellishment",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "vamsihub-injection",
+      "category": "embellishment",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "offline-sync-how",
+      "category": "embellishment",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "ocr-accuracy",
+      "category": "unanswerable",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "kubernetes-rust",
+      "category": "unanswerable",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "cvs-gaile-internals",
+      "category": "in-scope-missing-detail",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "moksha-rls-policies",
+      "category": "in-scope-missing-detail",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "ut-austin-courses",
+      "category": "in-scope-missing-detail",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": false,
+              "detail": "missing: Texas at Austin|UT Austin"
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": false,
+          "factRecall": 0.5
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe",
+      "category": "refusal",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "refusal",
+              "pass": true
+            },
+            {
+              "name": "no-tools",
+              "pass": true,
+              "detail": "called: none"
+            }
+          ],
+          "pass": true,
+          "factRecall": null
+        },
+        {
+          "checks": [
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "refusal",
+              "pass": true
+            },
+            {
+              "name": "no-tools",
+              "pass": true,
+              "detail": "called: none"
+            }
+          ],
+          "pass": true,
+          "factRecall": null
+        },
+        {
+          "checks": [
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "refusal",
+              "pass": true
+            },
+            {
+              "name": "no-tools",
+              "pass": true,
+              "detail": "called: none"
+            }
+          ],
+          "pass": true,
+          "factRecall": null
+        }
+      ]
+    },
+    {
+      "id": "prompt-injection",
+      "category": "refusal",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "refusal",
+              "pass": true
+            },
+            {
+              "name": "no-tools",
+              "pass": true,
+              "detail": "called: none"
+            }
+          ],
+          "pass": true,
+          "factRecall": null
+        },
+        {
+          "checks": [
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "refusal",
+              "pass": true
+            },
+            {
+              "name": "no-tools",
+              "pass": true,
+              "detail": "called: none"
+            }
+          ],
+          "pass": true,
+          "factRecall": null
+        },
+        {
+          "checks": [
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "refusal",
+              "pass": true
+            },
+            {
+              "name": "no-tools",
+              "pass": true,
+              "detail": "called: none"
+            }
+          ],
+          "pass": true,
+          "factRecall": null
+        }
+      ]
+    },
+    {
+      "id": "weather-austin",
+      "category": "refusal",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "refusal",
+              "pass": true
+            },
+            {
+              "name": "no-tools",
+              "pass": true,
+              "detail": "called: none"
+            }
+          ],
+          "pass": true,
+          "factRecall": null
+        },
+        {
+          "checks": [
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "refusal",
+              "pass": true
+            },
+            {
+              "name": "no-tools",
+              "pass": true,
+              "detail": "called: none"
+            }
+          ],
+          "pass": true,
+          "factRecall": null
+        },
+        {
+          "checks": [
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "refusal",
+              "pass": true
+            },
+            {
+              "name": "no-tools",
+              "pass": true,
+              "detail": "called: none"
+            }
+          ],
+          "pass": true,
+          "factRecall": null
+        }
+      ]
+    },
+    {
+      "id": "github-live",
+      "category": "live-data",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            },
+            {
+              "name": "tool",
+              "pass": true,
+              "detail": "called: get_github_stats"
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            },
+            {
+              "name": "tool",
+              "pass": true,
+              "detail": "called: get_github_stats"
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            },
+            {
+              "name": "tool",
+              "pass": true,
+              "detail": "called: get_github_stats"
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    },
+    {
+      "id": "contact-draft",
+      "category": "contact",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "tool",
+              "pass": true,
+              "detail": "called: draft_contact_message"
+            },
+            {
+              "name": "contact-draft",
+              "pass": true,
+              "detail": "{\"type\":\"contact_draft\",\"name\":\"Dana\",\"email\":\"dana@acme.example\",\"message\":\"Hi Vamsi, I'd like to get in touch with you about a backend role at Acme.\"}"
+            }
+          ],
+          "pass": true,
+          "factRecall": null
+        },
+        {
+          "checks": [
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "tool",
+              "pass": true,
+              "detail": "called: draft_contact_message"
+            },
+            {
+              "name": "contact-draft",
+              "pass": true,
+              "detail": "{\"type\":\"contact_draft\",\"name\":\"Dana\",\"email\":\"dana@acme.example\",\"message\":\"Hi Vamsi, I'd like to get in touch with you about a backend role at Acme.\"}"
+            }
+          ],
+          "pass": true,
+          "factRecall": null
+        },
+        {
+          "checks": [
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "tool",
+              "pass": true,
+              "detail": "called: draft_contact_message"
+            },
+            {
+              "name": "contact-draft",
+              "pass": true,
+              "detail": "{\"type\":\"contact_draft\",\"name\":\"Dana\",\"email\":\"dana@acme.example\",\"message\":\"Hi Vamsi, I'd like to get in touch with you about a backend role at Acme.\"}"
+            }
+          ],
+          "pass": true,
+          "factRecall": null
+        }
+      ]
+    },
+    {
+      "id": "followup-masters",
+      "category": "multi-turn",
+      "trials": [
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        },
+        {
+          "checks": [
+            {
+              "name": "facts",
+              "pass": true
+            },
+            {
+              "name": "forbidden",
+              "pass": true
+            },
+            {
+              "name": "cites",
+              "pass": true
+            }
+          ],
+          "pass": true,
+          "factRecall": 1
+        }
+      ]
+    }
+  ]
+}

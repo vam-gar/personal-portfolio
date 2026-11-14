@@ -1,0 +1,27 @@
+{
+  "caseId": "support-evals",
+  "system": "agent-v1",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "95409887e0fd",
+  "ranAt": "2026-11-14T22:49:04.184Z",
+  "reply": "Here are the headline and secondary benchmark metrics comparing SYSTEM_PROMPT_V1 (baseline policy list with broad escalation) and SYSTEM_PROMPT_V2 (hardened prompt with escalation hierarchy, reason taxonomy, and 6-step decision procedure) for the Retail Support AI Agent:\n\n### Headline Metrics\n| Metric | SYSTEM_PROMPT_V1 | SYSTEM_PROMPT_V2 | \u0394 (V2 \u2212 V1) |\n| --- | ---: | ---: | ---: |\n| Task Success Rate (SR) | 75.0% | 100.0% | +25.0% |\n| Constraint Adherence Rate (CAR) | 91.7% | 100.0% | +8.3% |\n| Tool-Call Precision | 90.0% | 95.0% | +5.0% |\n| Escalation Accuracy | 83.3% | 100.0% | +16.7% |\n\n### Secondary Metrics\n| Metric | SYSTEM_PROMPT_V1 | SYSTEM_PROMPT_V2 |\n| --- | ---: | ---: |\n| Tool-call check pass rate | 94.1% | 100.0% |\n| Policy check pass rate | 98.8% | 100.0% |\n| State check pass rate | 92.9% | 100.0% |\n| Avg tool calls / scenario | 1.67 | 1.67 |\n| Scenarios with errors | 0 | 0 |\n\n(Source: Retail Support AI Agent README)",
+  "steps": [
+    {
+      "tool": "search_knowledge",
+      "summary": "eval results V1 V2 support agent in support-agent",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Retail Support AI Agent"
+  ],
+  "retrievedSources": [
+    "Retail Support AI Agent"
+  ],
+  "latencyMs": 12501,
+  "modelCalls": 2,
+  "embedCalls": 1,
+  "promptTokens": 5014,
+  "outputTokens": 397,
+  "embedTokens": 13
+}

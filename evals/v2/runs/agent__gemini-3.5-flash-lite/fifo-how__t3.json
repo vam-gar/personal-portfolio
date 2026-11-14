@@ -1,0 +1,21 @@
+{
+  "caseId": "fifo-how",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "d6b2f6f299fa",
+  "ranAt": "2026-11-14T23:32:24.415Z",
+  "reply": "The FIFO payment engine for Moksha Jewels settles the oldest invoices first through one transactional Postgres function with idempotent upserts.\n\n(Source: resume)",
+  "steps": [],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume"
+  ],
+  "latencyMs": 820,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 2686,
+  "outputTokens": 29,
+  "embedTokens": 0
+}

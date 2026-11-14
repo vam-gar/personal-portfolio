@@ -1,0 +1,21 @@
+{
+  "caseId": "moksha-rls-policies",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "8def4368e268",
+  "ranAt": "2026-11-14T23:27:09.308Z",
+  "reply": "Vamsi's resume mentions that he designed a 10-table relational schema with row-level security and role-based access control for Moksha Jewels. However, the specific details or rules of the row-level security policies he wrote are not covered in his resume or project docs. \n\nYou may want to ask Vamsi directly for more details on his RLS implementation.\n\n(Source: resume)",
+  "steps": [],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume"
+  ],
+  "latencyMs": 905,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 2688,
+  "outputTokens": 86,
+  "embedTokens": 0
+}

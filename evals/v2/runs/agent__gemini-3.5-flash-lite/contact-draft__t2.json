@@ -1,0 +1,33 @@
+{
+  "caseId": "contact-draft",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "1c9bb25bab4d",
+  "ranAt": "2026-11-14T23:30:29.598Z",
+  "reply": "I have prepared a draft message for Vamsi with your details and message. Please review the draft card below and press Send when you are ready!\n\n(Source: resume)",
+  "steps": [
+    {
+      "tool": "draft_contact_message",
+      "summary": "",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume"
+  ],
+  "contactDraft": {
+    "type": "contact_draft",
+    "name": "Dana",
+    "email": "dana@acme.example",
+    "message": "Hi Vamsi, I'd like to get in touch with you about a backend role at Acme."
+  },
+  "latencyMs": 1197,
+  "modelCalls": 2,
+  "embedCalls": 0,
+  "promptTokens": 5516,
+  "outputTokens": 92,
+  "embedTokens": 0
+}
