@@ -1,36 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Content, GeminiError, extractText, generateContent } from "@/lib/gemini";
+import { runAgent } from "@/lib/agent/loop";
+import { Content, GeminiError } from "@/lib/gemini";
+import { rateLimit } from "@/lib/rate-limit";
 
-// Grounding instruction for vamsi-bot. Kept verbatim so the model is
-// strictly scoped to Vamsi's professional profile.
-const SYSTEM_INSTRUCTION = `You are vamsi-bot, a professional AI assistant built natively inside Vamsi Garlapati's Discord-styled portfolio website. Your purpose is to answer questions from recruiters and hiring managers about Vamsi's professional background.
+const MAX_MESSAGE_CHARS = 1000;
+const MAX_HISTORY_TURNS = 10;
+// Bot replies can be longer than visitor messages; still bounded.
+const MAX_HISTORY_CHARS = 4000;
 
-CORE RESTRICTION: You are strictly allowed to answer questions regarding Vamsi's skills, experiences, academic history, and projects. If a user asks a question entirely unrelated to Vamsi's professional profile (e.g., general coding challenges, recipes, sports, or trivia), you must politely refuse to answer, guiding them back to his portfolio metrics.
+function clientIp(req: NextRequest): string {
+  return (
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    req.headers.get("x-real-ip") ||
+    "unknown"
+  );
+}
 
-EXACT PROFILE CONTEXT: Use these exact details to formulate your answers:
-
-• EDUCATION:
-  - The University of Texas at Austin: Master of Science in Artificial Intelligence (2024 — Present)
-  - University of California, Santa Cruz: Bachelor of Science in Computer Science (2020 — 2024)
-
-• WORK EXPERIENCE:
-  - CVS Health (Software Developer): Developed Python RESTful APIs to integrate the OpenAI GPT-4 multimodal API into GAILE, CVS Health's internal AI assistant, and implemented feedback tracking endpoints for ratings and comments. Engineered automated Python data processing pipelines to transform and validate 53,000+ monthly healthcare records, maximizing reporting accuracy and data integrity.
-  - SVAYO (Artificial Intelligence / Machine Learning Intern): Built and fine-tuned YOLO and CNN-based deep learning models using PyTorch and TensorFlow to automate object detection with 92% accuracy. Led iterative model evaluations and hyperparameter optimization, successfully reducing false positive detections by 15%.
-
-• FEATURED SHOWCASE PROJECTS:
-  - UCSC Chess Engine: A full-stack chess platform that lets UCSC students compete in ranked matches and play against an AI opponent powered by the minimax algorithm with adjustable difficulty levels. (Built with Python, Flask, React.js, Node.js, Express.js, MongoDB).
-  - AI Travel Planner: A dynamic, full-stack web application that leverages LLM orchestration to generate highly customized, multi-day travel itineraries based on user destinations, budgets, and leisure preferences. (Next.js, React, Gemini API, Tailwind CSS, Zod, React-Leaflet).
-  - Wordle Algorithmic Solver: An intelligent puzzle-solving engine engineered to calculate optimal letter guesses. The system parses structural constraints and character frequencies to minimize the average guess count across large dictionary sets. (Built with Python, Data Structures, Algorithms, Git).
-
-• TECHNICAL TOOLKIT:
-  - Languages: Python, TypeScript, JavaScript, C++, C, Java, SQL, HTML/CSS
-  - Frameworks & Web: React, Next.js, Node.js, Flask, FastAPI, RESTful APIs
-  - AI & Data Libraries: PyTorch, TensorFlow, Keras, YOLO, CNNs, OpenAI GPT-4 API, Gemini API, Claude API, NumPy, Pandas
-  - Developer Tools & Data: Web Scraping (Playwright), Data Pipelines, PostgreSQL, Docker, Git, Linux, Azure, Postman
-
-GUARDRAIL POLICY: If a query is off-topic, respond with a variation of: 'I am only configured to answer questions regarding Vamsi's professional background, technical skills, and engineering projects. Please feel free to ask about his experiences at CVS Health, his current MS AI program at UT Austin, or his featured showcase applications!'`;
-
-type HistoryItem = { role: "user" | "bot"; text: string };
+// The client's transcript is untrusted. Only plain user/bot text survives:
+// tool calls and tool results are never accepted from the browser, so a
+// caller cannot inject fake tool output into the model's context.
+function sanitizeHistory(raw: unknown): Content[] {
+  if (!Array.isArray(raw)) return [];
+  const turns: Content[] = [];
+  for (const h of raw.slice(-MAX_HISTORY_TURNS)) {
+    const role = h?.role === "bot" ? "model" : h?.role === "user" ? "user" : null;
+    const text = typeof h?.text === "string" ? h.text.trim().slice(0, MAX_HISTORY_CHARS) : "";
+    if (role && text) turns.push({ role, parts: [{ text }] });
+  }
+  // A conversation has to open with the visitor.
+  while (turns.length && turns[0].role !== "user") turns.shift();
+  return turns;
+}
 
 export async function POST(req: NextRequest) {
   const apiKey = process.env.GEMINI_API_KEY;
@@ -41,39 +41,44 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const limit = rateLimit(clientIp(req));
+  if (!limit.ok) {
+    return NextResponse.json(
+      {
+        error: `⏳ You're sending messages quickly. Please try again in about ${limit.retryAfterSecs}s.`,
+      },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSecs) } }
+    );
+  }
+
   let message: string;
-  let history: HistoryItem[] = [];
+  let history: Content[];
   try {
     const body = await req.json();
-    message = (body?.message ?? "").toString();
-    if (Array.isArray(body?.history)) history = body.history;
+    message = typeof body?.message === "string" ? body.message.trim() : "";
+    history = sanitizeHistory(body?.history);
   } catch {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  if (!message.trim()) {
+  if (!message) {
     return NextResponse.json({ error: "Empty message." }, { status: 400 });
   }
-
-  // Build multi-turn context: prior history + the new user message.
-  const contents: Content[] = [
-    ...history
-      .filter((h) => h && h.text)
-      .map((h): Content => ({
-        role: h.role === "bot" ? "model" : "user",
-        parts: [{ text: h.text }],
-      })),
-    { role: "user", parts: [{ text: message }] },
-  ];
+  if (message.length > MAX_MESSAGE_CHARS) {
+    return NextResponse.json(
+      { error: `Please keep messages under ${MAX_MESSAGE_CHARS} characters.` },
+      { status: 400 }
+    );
+  }
 
   try {
-    const data = await generateContent(
-      { systemInstruction: SYSTEM_INSTRUCTION, contents },
-      apiKey
-    );
-    const reply =
-      extractText(data) || "Sorry, I couldn't generate a response just now.";
-    return NextResponse.json({ reply });
+    const result = await runAgent({ message, history }, { apiKey });
+    return NextResponse.json({
+      reply: result.reply,
+      steps: result.steps,
+      sources: result.sources,
+      ...(result.contactDraft ? { contactDraft: result.contactDraft } : {}),
+    });
   } catch (err) {
     if (err instanceof GeminiError) {
       console.error("Gemini API error:", err.status, err.detail);
@@ -84,9 +89,12 @@ export async function POST(req: NextRequest) {
         const secs = err.retryAfterSecs;
         return NextResponse.json(
           {
-            error: secs
-              ? `⏳ vamsi-bot is rate-limited right now. Please try again in about ${secs}s.`
-              : "⏳ vamsi-bot is rate-limited right now. Please try again in a moment.",
+            error:
+              secs && secs > 600
+                ? "⏳ vamsi-bot has used up its model quota for today. Please try again later, or reach Vamsi through #contact-form."
+                : secs
+                  ? `⏳ vamsi-bot is rate-limited right now. Please try again in about ${secs}s.`
+                  : "⏳ vamsi-bot is rate-limited right now. Please try again in a moment.",
           },
           { status: 429 }
         );
@@ -98,7 +106,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    console.error("Gemini request failed:", err);
+    console.error("Agent request failed:", err);
+    if (err instanceof Error && err.name === "TimeoutError") {
+      return NextResponse.json(
+        { error: "⏳ The model is responding slowly right now. Please try again in a moment." },
+        { status: 504 }
+      );
+    }
     return NextResponse.json(
       { error: "Could not reach the model service." },
       { status: 502 }
