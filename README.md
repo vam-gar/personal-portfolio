@@ -26,7 +26,7 @@ A personal portfolio for **Vamsi Garlapati** reimagined as a Discord server. Ins
 | Language | TypeScript |
 | Styling | Tailwind CSS + `@tailwindcss/typography` |
 | Markdown | `react-markdown` |
-| AI | Google Gemini API (`gemini-2.5-flash`) via a Next.js API route |
+| AI | Google Gemini API (`gemini-3.8-flash`) via a Next.js API route |
 | Contact | Formspree |
 | Hosting | Vercel (recommended) |
 

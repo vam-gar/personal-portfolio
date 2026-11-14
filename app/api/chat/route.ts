@@ -29,7 +29,7 @@ EXACT PROFILE CONTEXT: Use these exact details to formulate your answers:
 
 GUARDRAIL POLICY: If a query is off-topic, respond with a variation of: 'I am only configured to answer questions regarding Vamsi's professional background, technical skills, and engineering projects. Please feel free to ask about his experiences at CVS Health, his current MS AI program at UT Austin, or his featured showcase applications!'`;
 
-const MODEL = "gemini-2.5-flash";
+const MODEL = "gemini-3.8-flash";
 
 type HistoryItem = { role: "user" | "bot"; text: string };
 
