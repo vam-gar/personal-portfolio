@@ -18,7 +18,8 @@ export type Step = {
 export type AgentResult = {
   reply: string;
   steps: Step[];
-  sources: Source[];
+  sources: Source[]; // sources the reply cites (shown as tags)
+  retrievedSources: Source[]; // everything the tools returned
   contactDraft?: UiAction;
   // Bookkeeping for the eval harness.
   iterations: number;
@@ -29,6 +30,20 @@ export type AgentInput = {
   message: string;
   history?: Content[]; // prior turns, text only
 };
+
+// Source tags show only what the answer draws on. The prompt requires a
+// closing "(Source: ...)" line, so a retrieved source is kept only if that
+// line names it. Deterministic, no extra model call; a reply with no source
+// line gets no tags.
+const CITE_KEYS: Record<string, string> = { "GitHub (live)": "github" };
+const citeKey = (name: string) => CITE_KEYS[name] ?? name.split(" (")[0].toLowerCase();
+
+export function citedSources(reply: string, retrieved: Source[]): Source[] {
+  const cited = Array.from(reply.matchAll(/sources?\s*:\s*([^)\n]*)/gi))
+    .map((m) => m[1].toLowerCase())
+    .join(" | ");
+  return retrieved.filter((s) => cited.includes(citeKey(s.name)));
+}
 
 function summarize(args: Record<string, unknown> = {}): string {
   const text = String(args.query ?? args.section ?? args.target ?? "");
@@ -112,10 +127,12 @@ export async function runAgent(
     contents.push({ role: "user", parts: responseParts });
   }
 
+  const retrievedSources = Array.from(sources.values());
   return {
     reply: reply || FALLBACK_REPLY,
     steps,
-    sources: Array.from(sources.values()),
+    sources: citedSources(reply, retrievedSources),
+    retrievedSources,
     contactDraft,
     iterations,
     usage,

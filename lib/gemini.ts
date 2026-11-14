@@ -6,7 +6,7 @@
 const BASE = "https://generativelanguage.googleapis.com/v1beta";
 
 // GEMINI_MODEL overrides the chat model (evals, or a fallback during an outage).
-export const CHAT_MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
+export const CHAT_MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
 export const EMBED_MODEL = "gemini-embedding-2";
 // gemini-embedding-2 auto-normalises truncated outputs at this size.
 export const EMBED_DIMS = 768;
@@ -47,6 +47,7 @@ export type GenerateRequest = {
   temperature?: number;
   maxOutputTokens?: number;
   model?: string;
+  json?: boolean; // ask for a JSON-only response
 };
 
 export type GenerateResponse = {
@@ -123,6 +124,7 @@ export async function generateContent(
     generationConfig: {
       temperature: req.temperature ?? 1.0,
       max_output_tokens: req.maxOutputTokens ?? 2048,
+      ...(req.json ? { response_mime_type: "application/json" } : {}),
     },
   };
   if (req.systemInstruction) {
