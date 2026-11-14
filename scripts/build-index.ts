@@ -7,7 +7,7 @@
 //
 // Needs GEMINI_API_KEY (env or .env.local) unless --dry-run.
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import {
   EMBED_DIMS,
@@ -18,8 +18,8 @@ import {
 import { chunkMarkdown } from "../lib/rag/chunk";
 import { parseResume } from "../lib/rag/latex";
 import { Chunk, RagIndex } from "../lib/rag/types";
+import { ROOT, loadEnvLocal } from "./env";
 
-const ROOT = path.resolve(__dirname, "..");
 const OUT_DIR = path.join(ROOT, "generated");
 const dryRun = process.argv.includes("--dry-run");
 
@@ -27,15 +27,6 @@ type Sources = {
   resume: string;
   repos: { repo: string; title: string; local?: string }[];
 };
-
-function loadEnvLocal() {
-  const file = path.join(ROOT, ".env.local");
-  if (!existsSync(file)) return;
-  for (const line of readFileSync(file, "utf8").split("\n")) {
-    const m = /^\s*([A-Z0-9_]+)\s*=\s*(.*?)\s*$/.exec(line);
-    if (m && !(m[1] in process.env)) process.env[m[1]] = m[2].replace(/^["']|["']$/g, "");
-  }
-}
 
 async function fetchReadme(repo: string): Promise<string> {
   const url = `https://raw.githubusercontent.com/${repo}/HEAD/README.md`;

@@ -8,10 +8,12 @@
     "start": "next start",
     "lint": "next lint",
     "index": "tsx scripts/build-index.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "search": "tsx scripts/search.ts"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.20",
+    "minisearch": "^7.2.0",
     "next": "^14.2.35",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
