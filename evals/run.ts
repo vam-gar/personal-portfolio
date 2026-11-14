@@ -1,31 +1,30 @@
-// Eval runner: hybrid agent vs full-context prompting vs the first
-// (tools-only) agent.
+// Eval v1 (FROZEN): hybrid agent vs full-context prompting vs the first
+// tools-only agent. Cases, checks and answers are fixed; this script never
+// generates an answer. It only fills in missing groundedness judgements
+// and rebuilds the report from evals/v1/.
 //
-//   npm run eval                    run what is missing, grade, write results.md
-//   npm run eval -- --only a,b      limit to some case ids
-//   npm run eval -- --report        no API calls; rebuild results.md from the cache
-//   npm run eval -- --no-judge      skip the groundedness judge
-//   npm run eval -- --keep-stale    reuse cached baseline answers even if the
-//                                   prompt has changed since (noted in the report)
+//   npm run eval:v1                 fill pending judgements, rewrite the report
+//   npm run eval:v1 -- --report     no API calls; rebuild the report from the cache
+//   npm run eval:v1 -- --no-judge   skip the groundedness judge
 //
-// Every answer and every judgement is cached under evals/runs/. A quota or
-// timeout error stops the affected calls, the report is still written with
-// the cases marked pending, and the next run picks up where this one stopped.
+// New cases, checks or prompt changes are measured by eval v2 (run-v2.ts).
 //
-// Env: EVAL_MODEL (subject, default gemini-3.5-flash-lite), JUDGE_MODEL
-// (default gemini-4-hydrogen; must differ from the subject so they do not
-// share a free-tier quota).
+// Env: JUDGE_MODEL (default gemini-4-hydrogen; must differ from the subject
+// model so they do not share a free-tier quota).
 //
-// evals/notes.md (hand-written: the decision and disclosures) is copied to
-// the top of results.md.
+// evals/v1/notes.md (hand-written: the decision and disclosures) is copied
+// to the top of the report. The retrieval section and corpus size were
+// snapshotted when v1 was frozen (retrieval.md, meta.json) so later index
+// changes do not alter v1's numbers.
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { loadEnvLocal } from "../scripts/env";
+import { composeResults } from "./compose";
 
 loadEnvLocal();
 
-const DIR = __dirname;
+const DIR = path.join(__dirname, "v1");
 const RUNS = path.join(DIR, "runs");
 const args = process.argv.slice(2);
 const flag = (name: string) => args.includes(name);
@@ -39,6 +38,7 @@ const JUDGE_MODEL = process.env.JUDGE_MODEL || "gemini-4-hydrogen";
 const PAUSE_MS = 6000; // between subject runs, to stay under per-minute limits
 const K_VALUES = [1, 3, 5];
 
+const readIfExists = (file: string) => (existsSync(file) ? readFileSync(file, "utf8") : null);
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const readJson = <T>(file: string): T | null =>
   existsSync(file) ? (JSON.parse(readFileSync(file, "utf8")) as T) : null;
@@ -79,7 +79,6 @@ async function main() {
   const cases = allCases.filter((c) => !c.retrievalOnly);
   const reportOnly = flag("--report");
   const useJudge = !flag("--no-judge");
-  const keepStale = flag("--keep-stale");
 
   // `frozen` columns are never run: they show cached answers from a design
   // whose code no longer exists.
@@ -89,7 +88,6 @@ async function main() {
     { key: `baseline__${SUBJECT_MODEL}`, label: "Full context", system: "baseline", model: SUBJECT_MODEL },
     { key: `agent__${SUBJECT_MODEL}`, label: "Hybrid agent", system: "agent", model: SUBJECT_MODEL },
   ];
-  let staleReused = 0;
 
   // ---- quota-aware call wrapper ----
   const exhausted = new Set<string>(); // models whose daily quota is gone
@@ -133,27 +131,9 @@ async function main() {
     for (const col of columns) {
       const file = runFile(col.key, c.id);
       const cached = readJson<RunRecord>(file);
-      if (col.system === "agent-v1") {
-        if (cached) records.set(`${col.key}/${c.id}`, cached);
-        continue;
-      }
-      const system = col.system;
-      const want = systems.fingerprint(system, col.model, c.question, c.history ?? []);
-      if (cached && (cached.fingerprint === want || (keepStale && system === "baseline"))) {
-        if (cached.fingerprint !== want) staleReused++;
-        records.set(`${col.key}/${c.id}`, cached);
-        continue;
-      }
-      if (reportOnly) continue;
-      console.log(`run   ${col.label.padEnd(22)} ${c.id}`);
-      const rec = await guarded(col.model, `${col.key}/${c.id}`, () =>
-        systems.runSystem(system, col.model, c.id, c.question, c.history ?? [])
-      );
-      if (rec) {
-        writeJson(file, rec);
-        records.set(`${col.key}/${c.id}`, rec);
-        await sleep(PAUSE_MS);
-      }
+      // v1 is frozen: cached answers are used as they are and never re-run,
+      // even though the prompts have changed since.
+      if (cached) records.set(`${col.key}/${c.id}`, cached);
     }
   }
 
@@ -228,9 +208,10 @@ async function main() {
       ? search.index.chunks.filter((ch) => new RegExp(c.term!, "i").test(ch.text)).map((ch) => ch.id)
       : c.relevant ?? [];
 
+  const retrievalSnapshot = readIfExists(path.join(DIR, "retrieval.md"));
   const retrievalCases = allCases.filter((c) => relevantIds(c).length);
   for (const c of retrievalCases) {
-    if (embeddings[c.question] || reportOnly) continue;
+    if (embeddings[c.question] || reportOnly || retrievalSnapshot) continue;
     try {
       embeddings[c.question] = await embedQuery(c.question);
       writeJson(embFile, embeddings);
@@ -298,9 +279,9 @@ async function main() {
       )
     : [];
 
-  out.push("# Eval results: hybrid agent vs full-context prompting", "");
+  out.push("# Eval v1 (frozen): hybrid agent vs full-context prompting", "");
   out.push(
-    `Generated ${new Date().toISOString().slice(0, 10)} by \`npm run eval\`. Do not edit by hand; the Decision and disclosure sections come from \`evals/notes.md\`.`,
+    `Report rebuilt ${new Date().toISOString().slice(0, 10)} by \`npm run eval:v1\` from cached answers. Cases, checks and answers are frozen; only pending groundedness judgements can still change. The Decision and disclosure sections come from \`evals/v1/notes.md\`.`,
     ""
   );
   const notesFile = path.join(DIR, "notes.md");
@@ -313,18 +294,17 @@ async function main() {
     `- **Subject model:** \`${SUBJECT_MODEL}\` for every system, temperature 0.3, one run per case.`,
     `- **Judge model:** \`${JUDGE_MODEL}\`, used only for groundedness.`,
     `- **Cases:** ${cases.length} answered (${Array.from(new Set(cases.map((c) => c.category))).join(", ")}), plus ${allCases.length - cases.length} exact-term queries used for retrieval only.`,
-    `- **Corpus:** resume + 3 READMEs, ${search.index.chunks.length} chunks, about ${Math.round(systems.CORPUS.length / 4).toLocaleString("en-US")} tokens in full.`,
+    readJson<{ corpusLine: string }>(path.join(DIR, "meta.json"))?.corpusLine ??
+      `- **Corpus:** resume + 3 READMEs, ${search.index.chunks.length} chunks, about ${Math.round(systems.CORPUS.length / 4).toLocaleString("en-US")} tokens in full.`,
     ""
   );
-  if (staleReused) {
-    out.push(
-      `**Reused answers:** ${staleReused} full-context answers were generated before the evaluative-question rule was added to the shared prompt and were reused rather than re-run. Only the \`evaluative\` case exercises that rule, and it was run fresh.`,
-      ""
-    );
-  }
+  out.push(
+    "**Reused answers:** 20 full-context answers were generated before the evaluative-question rule was added to the shared prompt and were reused rather than re-run. Only the `evaluative` case exercises that rule, and it was run fresh.",
+    ""
+  );
   if (pendingRuns.length || pendingJudge.length || problems.length) {
     out.push("## Incomplete run", "");
-    out.push("Numbers below cover completed cases only. Run `npm run eval` again to fill in the rest; finished cases are cached.", "");
+    out.push("Numbers below cover completed cases only. Run `npm run eval:v1` again to fill in the rest; finished cases are cached.", "");
     if (pendingRuns.length) out.push(`- **Answers pending (${pendingRuns.length}):** ${pendingRuns.join("; ")}`);
     if (pendingJudge.length) out.push(`- **Judgements pending (${pendingJudge.length}):** ${pendingJudge.join("; ")}`);
     for (const p of Array.from(new Set(problems))) out.push(`- ${p}`);
@@ -445,18 +425,21 @@ async function main() {
     }
     out.push("", st.misses.length ? `Not in the top 5: ${st.misses.join(", ")}.` : "No misses at k=5.", "");
   };
-  out.push("## Retrieval hit@k", "");
-  out.push(
+  if (retrievalSnapshot) out.push(retrievalSnapshot.trim(), "");
+  else out.push("## Retrieval hit@k", "");
+  if (!retrievalSnapshot) out.push(
     "Whether a chunk that answers the query appears in the top k, using the query verbatim, with no LLM involved. MRR is the mean of 1/rank of the first relevant chunk. For exact-term queries, every chunk containing the term counts as relevant. The agent usually rewrites the query and can search more than once, so its effective retrieval differs.",
     ""
   );
-  out.push("### Whole index (resume + READMEs)", "");
-  retrievalTable("Natural-language questions", retrievalStats(natural, false));
-  retrievalTable("Exact-term queries", retrievalStats(exact, false));
-  out.push("### README chunks only (what the hybrid agent's search_knowledge covers)", "");
-  retrievalTable("Natural-language questions", retrievalStats(natural, true));
-  retrievalTable("Exact-term queries", retrievalStats(exact, true));
-  if (top5BySource.size) {
+  if (!retrievalSnapshot) {
+    out.push("### Whole index (resume + READMEs)", "");
+    retrievalTable("Natural-language questions", retrievalStats(natural, false));
+    retrievalTable("Exact-term queries", retrievalStats(exact, false));
+    out.push("### README chunks only (what the hybrid agent's search_knowledge covers)", "");
+    retrievalTable("Natural-language questions", retrievalStats(natural, true));
+    retrievalTable("Exact-term queries", retrievalStats(exact, true));
+  }
+  if (!retrievalSnapshot && top5BySource.size) {
     const total = Array.from(top5BySource.values()).reduce((a, b) => a + b, 0);
     const share = Array.from(top5BySource.entries())
       .sort((a, b) => b[1] - a[1])
@@ -505,6 +488,7 @@ async function main() {
   );
 
   writeFileSync(path.join(DIR, "results.md"), out.join("\n"));
+  composeResults();
   writeJson(path.join(DIR, "results.json"), {
     subjectModel: SUBJECT_MODEL,
     judgeModel: JUDGE_MODEL,
@@ -523,7 +507,7 @@ async function main() {
     })),
   });
   console.log(
-    `\nwrote evals/results.md — ${columns.map((col) => `${col.label}: ${where(col, (_, g) => g.pass).length}/${done(col).length} passing`).join(", ")}` +
+    `\nwrote evals/v1/results.md and evals/results.md — ${columns.map((col) => `${col.label}: ${where(col, (_, g) => g.pass).length}/${done(col).length} passing`).join(", ")}` +
       (pendingRuns.length || pendingJudge.length ? ` — ${pendingRuns.length} answers and ${pendingJudge.length} judgements pending` : "")
   );
 }

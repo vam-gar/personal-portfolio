@@ -1,0 +1,21 @@
+{
+  "caseId": "fifo-how",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "d6b2f6f299fa",
+  "ranAt": "2026-11-14T23:29:30.336Z",
+  "reply": "Based on Vamsi's resume, the FIFO payment engine settles the oldest invoices first through one transactional Postgres function with idempotent upserts. \n\nBecause this is a freelance project (Moksha Jewels) and the exact internal mechanics or code details beyond what is stated in the resume are not covered in his resume or project docs, that is the level of detail available. You may want to ask Vamsi directly for more specifics!\n\n(Source: resume)",
+  "steps": [],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume"
+  ],
+  "latencyMs": 737,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 2686,
+  "outputTokens": 94,
+  "embedTokens": 0
+}

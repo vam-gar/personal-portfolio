@@ -1,0 +1,21 @@
+{
+  "caseId": "offline-sync-how",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "20406f6f42a5",
+  "ranAt": "2026-11-14T23:32:35.168Z",
+  "reply": "Based on Vamsi's resume, he built a full-stack vendor payables web app for Moksha Jewels using React, Supabase PostgreSQL, and Vercel, which includes offline-first sync. However, the specific technical implementation details of how the offline-first sync works are not covered in his resume or project docs. \n\nYou may want to ask Vamsi directly for more details on the implementation!\n\n(Source: resume)",
+  "steps": [],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume"
+  ],
+  "latencyMs": 953,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 2687,
+  "outputTokens": 92,
+  "embedTokens": 0
+}

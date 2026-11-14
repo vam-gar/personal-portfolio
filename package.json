@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "search": "tsx scripts/search.ts",
     "chat": "tsx scripts/chat.ts",
-    "eval": "tsx evals/run.ts"
+    "eval": "tsx evals/run-v2.ts",
+    "eval:v1": "tsx evals/run.ts"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.20",

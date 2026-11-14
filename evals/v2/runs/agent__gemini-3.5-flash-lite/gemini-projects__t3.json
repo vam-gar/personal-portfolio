@@ -1,0 +1,21 @@
+{
+  "caseId": "gemini-projects",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "1a4f76a10c39",
+  "ranAt": "2026-11-14T23:32:07.988Z",
+  "reply": "Based on his resume, the following projects use the Gemini API:\n\n* **Retail Support AI Agent** (Tech stack: Python, PydanticAI, Gemini API, Claude API, Streamlit, Pytest)\n* **AI Travel Planner** (Tech stack: Next.js, React, Gemini API, Tailwind CSS, Zod, React-Leaflet)\n* **VamsiHub** (Tech stack: Next.js, TypeScript, Gemini API, Formspree, Tailwind CSS, Vercel)\n\n(Source: resume)",
+  "steps": [],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume"
+  ],
+  "latencyMs": 928,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 2681,
+  "outputTokens": 113,
+  "embedTokens": 0
+}

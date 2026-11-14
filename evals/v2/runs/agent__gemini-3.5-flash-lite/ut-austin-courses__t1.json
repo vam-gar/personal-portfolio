@@ -1,0 +1,21 @@
+{
+  "caseId": "ut-austin-courses",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "bb04c6bb999b",
+  "ranAt": "2026-11-14T23:27:14.216Z",
+  "reply": "The courses Vamsi has taken and his GPA are not covered in his resume or project docs. \n\nYou can ask Vamsi directly for more details about his academic coursework and GPA.\n\n(Source: resume)",
+  "steps": [],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume"
+  ],
+  "latencyMs": 715,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 2692,
+  "outputTokens": 45,
+  "embedTokens": 0
+}

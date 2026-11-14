@@ -1,0 +1,28 @@
+{
+  "caseId": "github-live",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "4b80c133f4e7",
+  "ranAt": "2026-11-14T23:30:23.833Z",
+  "reply": "The `support-agent` repository currently has 0 stars and was last pushed on October 20, 2026.\n\n(Source: GitHub stats for `support-agent`)",
+  "steps": [
+    {
+      "tool": "get_github_stats",
+      "summary": "support-agent",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "GitHub (live)"
+  ],
+  "retrievedSources": [
+    "Resume",
+    "GitHub (live)"
+  ],
+  "latencyMs": 1759,
+  "modelCalls": 2,
+  "embedCalls": 0,
+  "promptTokens": 5623,
+  "outputTokens": 60,
+  "embedTokens": 0
+}

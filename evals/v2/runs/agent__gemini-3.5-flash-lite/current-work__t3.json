@@ -1,0 +1,21 @@
+{
+  "caseId": "current-work",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "16b42ff9a56d",
+  "ranAt": "2026-11-14T23:30:53.971Z",
+  "reply": "Vamsi is currently working as a **Freelance Software Developer at Moksha Jewels** in Fremont, CA (starting September 2026). In this role, he shipped a full-stack vendor payables web app (using React, Supabase PostgreSQL, and Vercel) that is used daily by a diamond jewelry retailer to track supplier invoices, payments, landed costs, and vendor balances.\n\nHe is also pursuing his **Master of Science in Artificial Intelligence** online at the University of Texas at Austin, expected to graduate in May 2027.\n\n(Source: resume)",
+  "steps": [],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume"
+  ],
+  "latencyMs": 776,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 2680,
+  "outputTokens": 122,
+  "embedTokens": 0
+}

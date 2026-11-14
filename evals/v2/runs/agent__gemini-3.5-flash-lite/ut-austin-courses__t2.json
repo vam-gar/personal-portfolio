@@ -1,0 +1,21 @@
+{
+  "caseId": "ut-austin-courses",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "bb04c6bb999b",
+  "ranAt": "2026-11-14T23:30:04.762Z",
+  "reply": "Vamsi's resume lists his Master of Science in Artificial Intelligence at the University of Texas at Austin as an online/part-time program with an expected graduation date of May 2027. \n\nHis resume does not mention specific courses taken or his GPA.\n\n(Source: resume)",
+  "steps": [],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume"
+  ],
+  "latencyMs": 871,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 2692,
+  "outputTokens": 62,
+  "embedTokens": 0
+}

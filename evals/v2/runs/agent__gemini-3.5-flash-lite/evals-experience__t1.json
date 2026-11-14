@@ -1,0 +1,29 @@
+{
+  "caseId": "evals-experience",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "07e14dd325bd",
+  "ranAt": "2026-11-14T23:26:28.094Z",
+  "reply": "Vamsi has built and worked with evaluation loops for LLM systems across both his professional experience and his independent projects:\n\n- **At CVS Health:** He wrote telemetry endpoints that stored user ratings, comments, and prompt metadata in Cosmos DB. This served as a human-in-the-loop evaluation loop where the collected data drove prompt fixes, surfaced bugs, and prioritized new features for GAILE, an internal conversational AI platform used by hundreds of employees.\n- **In his Retail Support AI Agent project:** He built a custom, tau-bench-style evaluation framework consisting of 12 multi-turn scenarios graded primarily on final database state and tool precision rather than just transcripts. Using this framework through the Agent Development Life Cycle (ADLC), he iterated on prompts and raised task success from 75% to 100% and escalation accuracy from 83% to 100%.\n\n(Sources: resume, Retail Support AI Agent README)",
+  "steps": [
+    {
+      "tool": "search_knowledge",
+      "summary": "eval framework in support-agent",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Resume",
+    "Retail Support AI Agent"
+  ],
+  "retrievedSources": [
+    "Resume",
+    "Retail Support AI Agent"
+  ],
+  "latencyMs": 2335,
+  "modelCalls": 2,
+  "embedCalls": 1,
+  "promptTokens": 7255,
+  "outputTokens": 222,
+  "embedTokens": 8
+}

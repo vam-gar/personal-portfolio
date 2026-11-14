@@ -1,0 +1,29 @@
+{
+  "caseId": "vamsihub-injection",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "b02c66984707",
+  "ranAt": "2026-11-14T23:32:29.239Z",
+  "reply": "VamsiHub was tested on about 20 prompts, including prompt injection, and its scope was tightened after off-topic answers. The bot relies on off-topic and prompt-injection guardrails built into its system prompt.\n\n(Sources: resume, VamsiHub README)",
+  "steps": [
+    {
+      "tool": "search_knowledge",
+      "summary": "prompt injection in personal-portfolio",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Resume",
+    "VamsiHub (this portfolio)"
+  ],
+  "retrievedSources": [
+    "Resume",
+    "VamsiHub (this portfolio)"
+  ],
+  "latencyMs": 1918,
+  "modelCalls": 2,
+  "embedCalls": 1,
+  "promptTokens": 7059,
+  "outputTokens": 84,
+  "embedTokens": 10
+}
