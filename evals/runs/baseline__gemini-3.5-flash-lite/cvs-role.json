@@ -1,0 +1,17 @@
+{
+  "caseId": "cvs-role",
+  "system": "baseline",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "2f4d944b65f0",
+  "ranAt": "2026-11-14T22:48:27.865Z",
+  "reply": "At CVS Health, Vamsi worked as a Software Developer (Remote) from July 2024 to July 2025, where he:\n\n- Built production Python REST APIs on Azure Functions for GAILE, CVS's internal conversational AI platform used by hundreds of employees, adding GPT-4 multimodal image analysis and summarization.\n- Worked directly with business stakeholders to gather requirements, demo releases, and fix user-reported issues.\n- Wrote telemetry endpoints storing user ratings, comments, and prompt metadata in Cosmos DB as a human-in-the-loop eval loop, which drove prompt fixes, surfaced bugs, and prioritized new features.\n- Wrote Python pipelines parsing multiple types of unstructured healthcare and enterprise forms (RFPs, medical records) into structured JSON for downstream LLM workflows, reducing manual data entry.\n- Automated the monthly healthcare data load, validating and backfilling 53,000+ records with unit tests.\n\n(Source: resume)",
+  "steps": [],
+  "sources": [],
+  "retrievedSources": [],
+  "latencyMs": 1270,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 12514,
+  "outputTokens": 204,
+  "embedTokens": 0
+}

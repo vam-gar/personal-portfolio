@@ -1,0 +1,8 @@
+{
+  "judgeModel": "gemini-4-hydrogen",
+  "replyHash": "717c0f3a024b",
+  "verdict": "ungrounded",
+  "unsupported": [
+    "His resume does not list professional work experience building LLM evals outside of this project."
+  ]
+}

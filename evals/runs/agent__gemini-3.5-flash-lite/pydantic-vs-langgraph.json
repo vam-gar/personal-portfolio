@@ -1,0 +1,27 @@
+{
+  "caseId": "pydantic-vs-langgraph",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "0703a3f647c9",
+  "ranAt": "2026-11-14T22:49:30.918Z",
+  "reply": "Vamsi chose PydanticAI over LangGraph for three concrete reasons:\n\n1. **Offline, zero-token testing:** PydanticAI provides `FunctionModel` and `TestModel` to script model replies so the full agent loop, tool dispatch, and state machine can run in CI with no API key and zero token cost. With LangGraph, mocking sits at the LLM-client layer and the graph runtime still has to be stood up.\n2. **Schema validation at the action boundary:** Tool signatures act as the schema, and arguments are validated by Pydantic before the function runs (ensuring invalid arguments never reach the tool body). In LangGraph, tool schemas are declared separately and validation depends on the chosen tool-node implementation.\n3. **Framework surface area:** PydanticAI requires just one `Agent`, one `deps` object, and one `run_sync`. For a four-tool support agent, a state graph is mostly ceremony, whereas PydanticAI's single loop plus a state flag is all the problem needs.\n\n(Source: Retail Support AI Agent README)",
+  "steps": [
+    {
+      "tool": "search_knowledge",
+      "summary": "PydanticAI LangGraph support agent decision reason in support-agent",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Retail Support AI Agent"
+  ],
+  "retrievedSources": [
+    "Retail Support AI Agent"
+  ],
+  "latencyMs": 2141,
+  "modelCalls": 2,
+  "embedCalls": 1,
+  "promptTokens": 4333,
+  "outputTokens": 263,
+  "embedTokens": 17
+}

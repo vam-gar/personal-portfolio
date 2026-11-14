@@ -1,0 +1,27 @@
+{
+  "caseId": "followup-masters",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "8ac49574bcbf",
+  "ranAt": "2026-11-14T22:52:46.828Z",
+  "reply": "Vamsi's Master of Science in Artificial Intelligence at the University of Texas at Austin is part-time (online), with an expected completion date of May 2027.\n\n(Source: resume)",
+  "steps": [
+    {
+      "tool": "get_resume_section",
+      "summary": "education",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume"
+  ],
+  "latencyMs": 1413,
+  "modelCalls": 2,
+  "embedCalls": 0,
+  "promptTokens": 2949,
+  "outputTokens": 62,
+  "embedTokens": 0
+}

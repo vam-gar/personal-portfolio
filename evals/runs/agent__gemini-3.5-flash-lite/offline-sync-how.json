@@ -1,0 +1,34 @@
+{
+  "caseId": "offline-sync-how",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "b3aba8ffd549",
+  "ranAt": "2026-11-14T22:51:17.380Z",
+  "reply": "The available sources state that Vamsi designed a 10-table relational schema with row-level security, role-based access control, and offline-first sync for the Moksha Jewels vendor payables web app (built with React, Supabase PostgreSQL, and Vercel). \n\nHowever, the sources do not contain further details explaining the specific implementation mechanism of the offline-first sync.\n\n(Source: resume)",
+  "steps": [
+    {
+      "tool": "search_knowledge",
+      "summary": "Moksha Jewels offline-first sync",
+      "ok": true
+    },
+    {
+      "tool": "search_knowledge",
+      "summary": "Moksha Jewels sync in resume",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume",
+    "Retail Support AI Agent",
+    "AI Travel Planner"
+  ],
+  "latencyMs": 2731,
+  "modelCalls": 3,
+  "embedCalls": 2,
+  "promptTokens": 7809,
+  "outputTokens": 136,
+  "embedTokens": 15
+}

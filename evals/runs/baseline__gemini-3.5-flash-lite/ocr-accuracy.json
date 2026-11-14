@@ -1,0 +1,17 @@
+{
+  "caseId": "ocr-accuracy",
+  "system": "baseline",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "18a96fcbb877",
+  "ranAt": "2026-11-14T22:51:41.002Z",
+  "reply": "The provided resume and project documents do not contain information regarding the accuracy percentage or metrics of the OCR invoice-parsing pipeline built for Moksha Jewels. (Source: resume)\n\nIf you would like to know more, please feel free to ask Vamsi directly or reach out to him via the #contact-form channel.",
+  "steps": [],
+  "sources": [],
+  "retrievedSources": [],
+  "latencyMs": 1203,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 12520,
+  "outputTokens": 65,
+  "embedTokens": 0
+}

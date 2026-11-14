@@ -1,0 +1,17 @@
+{
+  "caseId": "offline-sync-how",
+  "system": "baseline",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "e184010ac5c4",
+  "ranAt": "2026-11-14T22:51:26.116Z",
+  "reply": "Vamsi's resume and project documentation do not state how the offline-first sync is implemented in the Moksha Jewels app. The resume only mentions that he designed a 10-table relational schema with row-level security, role-based access control, and offline-first sync for the vendor payables web app. \n\nThat is the level of detail available; please ask Vamsi directly for more specifics.\n\n(Source: resume)",
+  "steps": [],
+  "sources": [],
+  "retrievedSources": [],
+  "latencyMs": 1072,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 12519,
+  "outputTokens": 93,
+  "embedTokens": 0
+}

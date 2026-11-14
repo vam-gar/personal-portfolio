@@ -1,0 +1,27 @@
+{
+  "caseId": "travel-coordinates",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "d33b21232ee7",
+  "ranAt": "2026-11-14T22:49:46.533Z",
+  "reply": "Vamsi's AI Travel Planner validates coordinates at render time rather than in the Zod schema because `streamObject` validates the entire object. Strict `lat` and `lng` bounds in the Zod schema would cause an entire itinerary to be rejected over a single bad number. \n\nFiltering in `ItineraryView` keeps failures local, resulting in just one missing pin rather than an empty screen.\n\n(Sources: AI Travel Planner README)",
+  "steps": [
+    {
+      "tool": "search_knowledge",
+      "summary": "coordinates render time Zod schema in ai-travel-planner",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "AI Travel Planner"
+  ],
+  "retrievedSources": [
+    "AI Travel Planner"
+  ],
+  "latencyMs": 2512,
+  "modelCalls": 2,
+  "embedCalls": 1,
+  "promptTokens": 4274,
+  "outputTokens": 123,
+  "embedTokens": 14
+}

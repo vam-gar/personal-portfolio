@@ -1,0 +1,27 @@
+{
+  "caseId": "svayo-metrics",
+  "system": "agent",
+  "model": "gemini-3.5-flash-lite",
+  "fingerprint": "5f089620a2a0",
+  "ranAt": "2026-11-14T22:48:35.144Z",
+  "reply": "At SVAYO, Vamsi reached 92% detection accuracy with his custom CNN and YOLO models trained in PyTorch and TensorFlow for facial skin feature detection and acne classification. \n\nFor architectures, he benchmarked R-CNN, Faster R-CNN, and YOLO on latency versus accuracy for real-time inference.\n\n(Source: resume)",
+  "steps": [
+    {
+      "tool": "get_resume_section",
+      "summary": "experience",
+      "ok": true
+    }
+  ],
+  "sources": [
+    "Resume"
+  ],
+  "retrievedSources": [
+    "Resume"
+  ],
+  "latencyMs": 1430,
+  "modelCalls": 2,
+  "embedCalls": 0,
+  "promptTokens": 3238,
+  "outputTokens": 90,
+  "embedTokens": 0
+}
