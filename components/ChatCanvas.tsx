@@ -13,6 +13,11 @@ import {
   SKILLS,
 } from "@/lib/data";
 
+// What /api/chat returns alongside the reply.
+type Step = { tool: string; summary: string; ok: boolean };
+type Source = { name: string; url?: string };
+type ContactDraft = { name: string; email: string; message: string };
+
 // A single entry in the live vamsi-bot conversation.
 type ChatEntry = {
   id: number;
@@ -20,7 +25,13 @@ type ChatEntry = {
   text: string;
   time: string;
   typing?: boolean;
+  error?: boolean; // transport/rate-limit notice, not a real bot turn
+  steps?: Step[];
+  sources?: Source[];
+  contactDraft?: ContactDraft;
 };
+
+const MAX_MESSAGE_CHARS = 1000; // mirrors the server-side cap
 
 // Format a Date as "Today at H:MM AM/PM" (e.g. "Today at 12:51 PM").
 function formatChatTime(date: Date): string {
@@ -74,9 +85,10 @@ export default function ChatCanvas({ activeChannel, onOpenNav }: Props) {
     const botId = ++idRef.current;
     const time = formatChatTime(new Date());
 
-    // Snapshot prior turns (excluding the typing placeholder) for context.
+    // Snapshot prior turns for context: text only, skipping the typing
+    // placeholder and error notices. The server keeps the last 10.
     const history = messages
-      .filter((m) => !m.typing)
+      .filter((m) => !m.typing && !m.error)
       .map((m) => ({ role: m.role, text: m.text }));
 
     setMessages((prev) => [
@@ -94,14 +106,23 @@ export default function ChatCanvas({ activeChannel, onOpenNav }: Props) {
         body: JSON.stringify({ message: text, history }),
       });
       const data = await res.json().catch(() => ({}));
-      const reply =
-        res.ok && data.reply
-          ? data.reply
-          : data.error ||
-            "Sorry, something went wrong. Please try again in a moment.";
+      const ok = res.ok && typeof data.reply === "string";
+      const update: Partial<ChatEntry> = ok
+        ? {
+            text: data.reply,
+            steps: Array.isArray(data.steps) ? data.steps : [],
+            sources: Array.isArray(data.sources) ? data.sources : [],
+            contactDraft: data.contactDraft,
+          }
+        : {
+            text:
+              data.error ||
+              "Sorry, something went wrong. Please try again in a moment.",
+            error: true,
+          };
       setMessages((prev) =>
         prev.map((m) =>
-          m.id === botId ? { ...m, typing: false, text: reply } : m
+          m.id === botId ? { ...m, typing: false, ...update } : m
         )
       );
     } catch {
@@ -111,6 +132,7 @@ export default function ChatCanvas({ activeChannel, onOpenNav }: Props) {
             ? {
                 ...m,
                 typing: false,
+                error: true,
                 text: "⚠️ I couldn't reach the server. Please try again.",
               }
             : m
@@ -167,12 +189,7 @@ export default function ChatCanvas({ activeChannel, onOpenNav }: Props) {
               m.role === "user" ? (
                 <UserMessage key={m.id} text={m.text} time={m.time} />
               ) : (
-                <BotMessage
-                  key={m.id}
-                  text={m.text}
-                  time={m.time}
-                  typing={m.typing}
-                />
+                <BotMessage key={m.id} entry={m} />
               )
             )}
           </div>
@@ -193,6 +210,7 @@ export default function ChatCanvas({ activeChannel, onOpenNav }: Props) {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={sending}
+            maxLength={MAX_MESSAGE_CHARS}
             placeholder={
               sending ? "vamsi-bot is replying…" : `Message #${label}`
             }
@@ -224,15 +242,8 @@ function UserMessage({ text, time }: { text: string; time: string }) {
   );
 }
 
-function BotMessage({
-  text,
-  time,
-  typing,
-}: {
-  text: string;
-  time: string;
-  typing?: boolean;
-}) {
+function BotMessage({ entry }: { entry: ChatEntry }) {
+  const { text, time, typing, steps, sources, contactDraft } = entry;
   return (
     <div className="flex gap-4 px-1 py-2">
       <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-discord-blurple text-sm font-bold text-white">
@@ -253,11 +264,189 @@ function BotMessage({
             </span>
           </div>
         ) : (
-          <div className="prose prose-invert mt-1 max-w-none break-words text-sm leading-relaxed prose-headings:text-white prose-p:my-1 prose-strong:text-white prose-a:text-discord-blurple prose-ul:my-1 prose-li:my-0.5 marker:text-discord-muted">
-            <ReactMarkdown>{text}</ReactMarkdown>
-          </div>
+          <>
+            <div className="prose prose-invert mt-1 max-w-none break-words text-sm leading-relaxed prose-headings:text-white prose-p:my-1 prose-strong:text-white prose-a:text-discord-blurple prose-ul:my-1 prose-li:my-0.5 marker:text-discord-muted">
+              <ReactMarkdown>{text}</ReactMarkdown>
+            </div>
+            {contactDraft && <ContactDraftCard draft={contactDraft} />}
+            {steps && steps.length > 0 && <ToolTrace steps={steps} />}
+            {sources && sources.length > 0 && <SourceTags sources={sources} />}
+          </>
         )}
       </div>
+    </div>
+  );
+}
+
+// ---------- tool trace + sources under a bot reply ----------
+function stepLabel(step: Step): string {
+  switch (step.tool) {
+    case "search_knowledge":
+      return "🔍 searched knowledge base";
+    case "get_resume_section":
+      return "📄 read resume";
+    case "get_github_stats":
+      return "📊 GitHub stats";
+    case "draft_contact_message":
+      return "✉️ drafted message";
+    default:
+      return `🔧 ${step.tool}`;
+  }
+}
+
+// Collapsed: one line of distinct actions. Expanded: every call in order.
+function ToolTrace({ steps }: { steps: Step[] }) {
+  const summary = Array.from(new Set(steps.map(stepLabel))).join(" · ");
+  return (
+    <details className="group mt-2 text-xs text-discord-muted">
+      <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 rounded px-1 py-0.5 hover:bg-[#35373c] hover:text-discord-text [&::-webkit-details-marker]:hidden">
+        <span className="inline-block transition-transform group-open:rotate-90">
+          ▸
+        </span>
+        <span>{summary}</span>
+      </summary>
+      <ol className="mt-1 space-y-0.5 border-l-2 border-[#3f4147] pl-3 font-mono">
+        {steps.map((step, i) => (
+          <li key={i} className="break-words">
+            <span className={step.ok ? "text-discord-green" : "text-[#f23f43]"}>
+              {step.ok ? "✓" : "✗"}
+            </span>{" "}
+            <span className="text-discord-text">{step.tool}</span>
+            {step.summary && <span> — {step.summary}</span>}
+          </li>
+        ))}
+      </ol>
+    </details>
+  );
+}
+
+function SourceTags({ sources }: { sources: Source[] }) {
+  const tag =
+    "rounded bg-[#2b2d31] px-1.5 py-0.5 text-[11px] font-medium text-discord-muted";
+  return (
+    <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+      <span className="text-[11px] uppercase tracking-wide text-discord-muted">
+        Sources
+      </span>
+      {sources.map((s) =>
+        s.url ? (
+          <a
+            key={s.name}
+            href={s.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${tag} hover:text-discord-blurple`}
+          >
+            {s.name} ↗
+          </a>
+        ) : (
+          <span key={s.name} className={tag}>
+            {s.name}
+          </span>
+        )
+      )}
+    </div>
+  );
+}
+
+// ---------- contact draft confirm card ----------
+// The bot can only draft. Nothing leaves the browser until the visitor
+// presses Send, and then it goes through the same Formspree path as the
+// #contact-form channel.
+function ContactDraftCard({ draft }: { draft: ContactDraft }) {
+  const [name, setName] = useState(draft.name);
+  const [email, setEmail] = useState(draft.email);
+  const [message, setMessage] = useState(draft.message);
+  const [status, setStatus] = useState<SubmitStatus | "discarded">("idle");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !email || !message || status === "sending") return;
+    setStatus("sending");
+    setStatus((await sendContactMessage({ name, email, message })) ? "sent" : "error");
+  };
+
+  if (status === "discarded") {
+    return (
+      <p className="mt-2 text-xs italic text-discord-muted">
+        Draft discarded — nothing was sent.
+      </p>
+    );
+  }
+
+  const sending = status === "sending";
+  return (
+    <div className="mt-2 max-w-md rounded-[4px] border-l-4 border-discord-blurple bg-[#2b2d31] p-4">
+      {status === "sent" ? (
+        <>
+          <p className="font-semibold text-white">✅ Message sent to Vamsi</p>
+          <p className="mt-1 text-sm text-discord-text">
+            He&apos;ll reply to {email}.
+          </p>
+        </>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <p className="font-semibold text-white">✉️ Draft message to Vamsi</p>
+          <p className="mb-3 mt-1 text-xs text-discord-muted">
+            Not sent yet. Review or edit it, then press Send.
+          </p>
+          <FormField label="Name">
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Your name"
+              required
+              disabled={sending}
+              className="discord-field"
+            />
+          </FormField>
+          <FormField label="Email">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              required
+              disabled={sending}
+              className="discord-field"
+            />
+          </FormField>
+          <FormField label="Message">
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              rows={4}
+              required
+              disabled={sending}
+              className="discord-field resize-none"
+            />
+          </FormField>
+
+          {status === "error" && (
+            <p className="mb-2 text-sm text-[#f23f43]">
+              Couldn&apos;t send — please try again or use #contact-form.
+            </p>
+          )}
+
+          <div className="mt-2 flex gap-2">
+            <button
+              type="submit"
+              disabled={sending}
+              className="rounded bg-discord-blurple px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#4752c4] disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {sending ? "Sending..." : "Send"}
+            </button>
+            <button
+              type="button"
+              disabled={sending}
+              onClick={() => setStatus("discarded")}
+              className="rounded px-4 py-2 text-sm font-medium text-discord-text hover:underline disabled:opacity-60"
+            >
+              Discard
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   );
 }
@@ -605,6 +794,32 @@ const FORMSPREE_ENDPOINT =
 
 type SubmitStatus = "idle" | "sending" | "sent" | "error";
 
+// The one place a contact message leaves the browser. Used by the
+// #contact-form channel and by the bot's draft card. Resolves to success.
+async function sendContactMessage(fields: {
+  name: string;
+  email: string;
+  message: string;
+}): Promise<boolean> {
+  try {
+    const res = await fetch(FORMSPREE_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        ...fields,
+        _replyto: fields.email,
+        _subject: `Portfolio contact from ${fields.name}`,
+      }),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 function ContactForm() {
   const now = useNow();
   const [name, setName] = useState("");
@@ -617,31 +832,12 @@ function ContactForm() {
     if (!name || !email || !message || status === "sending") return;
 
     setStatus("sending");
-    try {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          message,
-          _replyto: email,
-          _subject: `Portfolio contact from ${name}`,
-        }),
-      });
-
-      if (res.ok) {
-        setName("");
-        setEmail("");
-        setMessage("");
-        setStatus("sent");
-      } else {
-        setStatus("error");
-      }
-    } catch {
+    if (await sendContactMessage({ name, email, message })) {
+      setName("");
+      setEmail("");
+      setMessage("");
+      setStatus("sent");
+    } else {
       setStatus("error");
     }
   };
@@ -722,25 +918,6 @@ function ContactForm() {
         )}
       </div>
 
-      {/* local field styling */}
-      <style jsx>{`
-        :global(.discord-field) {
-          width: 100%;
-          border-radius: 4px;
-          background-color: #1e1f22;
-          padding: 0.6rem 0.75rem;
-          font-size: 14px;
-          color: #dbdee1;
-          outline: none;
-          border: 1px solid transparent;
-        }
-        :global(.discord-field:focus) {
-          border-color: #5865f2;
-        }
-        :global(.discord-field::placeholder) {
-          color: #6d7178;
-        }
-      `}</style>
     </ChatMessage>
   );
 }

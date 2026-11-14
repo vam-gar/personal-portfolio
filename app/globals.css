@@ -19,3 +19,21 @@ body {
 .discord-scroll::-webkit-scrollbar-track {
   background-color: transparent;
 }
+
+/* Form fields shared by the contact form and the bot's draft card */
+.discord-field {
+  width: 100%;
+  border-radius: 4px;
+  background-color: #1e1f22;
+  padding: 0.6rem 0.75rem;
+  font-size: 14px;
+  color: #dbdee1;
+  outline: none;
+  border: 1px solid transparent;
+}
+.discord-field:focus {
+  border-color: #5865f2;
+}
+.discord-field::placeholder {
+  color: #6d7178;
+}
