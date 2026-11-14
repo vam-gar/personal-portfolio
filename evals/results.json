@@ -935,7 +935,8 @@
             "checks": [
               {
                 "name": "facts",
-                "pass": true
+                "pass": false,
+                "detail": "missing: offline-first"
               },
               {
                 "name": "forbidden",
@@ -943,11 +944,11 @@
               },
               {
                 "name": "declines",
-                "pass": true
+                "pass": false
               }
             ],
-            "pass": true,
-            "factRecall": 1
+            "pass": false,
+            "factRecall": 0
           },
           "judgement": null
         }
@@ -1327,7 +1328,7 @@
               {
                 "name": "contact-draft",
                 "pass": true,
-                "detail": "{\"type\":\"contact_draft\",\"name\":\"Dana\",\"email\":\"dana@acme.example\",\"message\":\"Hi Vamsi, I'd like to get in touch with you about a backend role at Acme.\"}"
+                "detail": "{\"type\":\"contact_draft\",\"name\":\"Dana\",\"email\":\"dana@acme.example\",\"message\":\"Hi Vamsi, I would like to get in touch with you about a backend role at Acme.\"}"
               }
             ],
             "pass": true,

@@ -2,29 +2,20 @@
   "caseId": "fifo-how",
   "system": "agent",
   "model": "gemini-3.5-flash-lite",
-  "fingerprint": "88c11c56df90",
-  "ranAt": "2026-11-14T23:09:46.586Z",
-  "reply": "The details of how the FIFO payment engine works are not covered in Vamsi's resume or project documentation. \n\nAccording to his resume, Vamsi built a FIFO payment engine for Moksha Jewels that settles the oldest invoices first through one transactional Postgres function with idempotent upserts.\n\n(Source: resume)",
-  "steps": [
-    {
-      "tool": "search_knowledge",
-      "summary": "FIFO payment engine Moksha Jewels",
-      "ok": true
-    }
-  ],
+  "fingerprint": "f3c77c309043",
+  "ranAt": "2026-11-14T23:18:08.445Z",
+  "reply": "The FIFO (First-In, First-Out) payment engine settles the oldest invoices first through one transactional Postgres function with idempotent upserts. \n\n(Source: resume)",
+  "steps": [],
   "sources": [
     "Resume"
   ],
   "retrievedSources": [
-    "Resume",
-    "AI Travel Planner",
-    "VamsiHub (this portfolio)",
-    "Retail Support AI Agent"
+    "Resume"
   ],
-  "latencyMs": 1719,
-  "modelCalls": 2,
-  "embedCalls": 1,
-  "promptTokens": 6311,
-  "outputTokens": 85,
-  "embedTokens": 9
+  "latencyMs": 822,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 2506,
+  "outputTokens": 35,
+  "embedTokens": 0
 }

@@ -2,9 +2,9 @@
   "caseId": "strongest-project",
   "system": "agent",
   "model": "gemini-3.5-flash-lite",
-  "fingerprint": "15fc1c7f29d3",
-  "ranAt": "2026-11-14T23:09:39.344Z",
-  "reply": "Based on Vamsi's resume and project documentation, his strongest project is the **Retail Support AI Agent (Oct. 2026)**. \n\nThe reasons for this assessment, relying directly on the facts provided in his sources, include:\n- **Rigorously tested and evaluated:** It is backed by 51 Pytest tests and a tau-bench-style evaluation framework comprising 12 multi-turn scenarios graded on final database state.\n- **Measurable performance gains:** Iterating prompts through the agent development lifecycle (ADLC) raised task success from 75% to 100% and escalation accuracy from 83% to 100%.\n- **Robust engineering:** It features schema-validated tool calling (using Python, PydanticAI, and Gemini/Claude APIs), enforces policy guardrails, and incorporates a human-handoff circuit breaker in code.\n\n*(Sources: resume, Retail Support AI Agent README)*",
+  "fingerprint": "97a150d7b5b6",
+  "ranAt": "2026-11-14T23:18:01.304Z",
+  "reply": "Based on Vamsi's resume and project documentation, his strongest project is the **Retail Support AI Agent**. \n\nHere is why it stands out:\n- **Rigorous Engineering & Testing:** It features schema-validated tool calling, explicit policy guardrails, and a human-handoff circuit breaker implemented in code—backed by an extensive test suite of 51 Pytest tests.\n- **Data-Driven Iteration:** Vamsi built a tau-bench-style evaluation framework comprising 12 multi-turn scenarios graded on final database state. Using this setup, he iterated prompts through the Agent Development Lifecycle (ADLC) to measurably improve performance, raising task success from 75% to 100% and escalation accuracy from 83% to 100%.\n\n(Sources: resume, Retail Support AI Agent README)",
   "steps": [],
   "sources": [
     "Resume"
@@ -12,10 +12,10 @@
   "retrievedSources": [
     "Resume"
   ],
-  "latencyMs": 1234,
+  "latencyMs": 1135,
   "modelCalls": 1,
   "embedCalls": 0,
-  "promptTokens": 2474,
-  "outputTokens": 200,
+  "promptTokens": 2499,
+  "outputTokens": 177,
   "embedTokens": 0
 }

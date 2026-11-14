@@ -2,28 +2,18 @@
   "caseId": "offline-sync-how",
   "system": "agent",
   "model": "gemini-3.5-flash-lite",
-  "fingerprint": "d01e2ddf71fb",
-  "ranAt": "2026-11-14T23:10:01.871Z",
-  "reply": "Vamsi's project docs do not cover how the offline-first sync is implemented in the Moksha Jewels app. That detail is not present in Vamsi's resume or project documentation beyond the mention of offline-first sync in his freelance experience at Moksha Jewels.\n\n(Source: resume)",
-  "steps": [
-    {
-      "tool": "search_knowledge",
-      "summary": "offline-first sync Moksha Jewels",
-      "ok": true
-    }
-  ],
-  "sources": [
+  "fingerprint": "cc881ba84593",
+  "ranAt": "2026-11-14T23:18:22.630Z",
+  "reply": "I am only configured to answer questions regarding Vamsi's professional background, technical skills, and engineering projects. Please feel free to ask about his experiences at CVS Health, his current MS AI program at UT Austin, or his featured showcase applications!",
+  "steps": [],
+  "sources": [],
+  "retrievedSources": [
     "Resume"
   ],
-  "retrievedSources": [
-    "Resume",
-    "Retail Support AI Agent",
-    "AI Travel Planner"
-  ],
-  "latencyMs": 1609,
-  "modelCalls": 2,
-  "embedCalls": 1,
-  "promptTokens": 6433,
-  "outputTokens": 85,
-  "embedTokens": 8
+  "latencyMs": 770,
+  "modelCalls": 1,
+  "embedCalls": 0,
+  "promptTokens": 2507,
+  "outputTokens": 50,
+  "embedTokens": 0
 }

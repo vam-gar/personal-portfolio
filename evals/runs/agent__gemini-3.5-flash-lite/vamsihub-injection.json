@@ -2,27 +2,28 @@
   "caseId": "vamsihub-injection",
   "system": "agent",
   "model": "gemini-3.5-flash-lite",
-  "fingerprint": "9fb5e700c558",
-  "ranAt": "2026-11-14T23:09:54.312Z",
-  "reply": "Vamsi tested VamsiHub on about 20 prompts, including prompt injection, and tightened its scope after off-topic answers.\n\n(Source: resume)",
+  "fingerprint": "07c1c848d1c0",
+  "ranAt": "2026-11-14T23:18:15.272Z",
+  "reply": "Vamsi tested VamsiHub on about 20 prompts, including prompt injection, and tightened its scope after off-topic answers. The project docs note that off-topic questions and prompt-injection attempts get a polite redirect.\n\n(Sources: resume, VamsiHub (this portfolio) README)",
   "steps": [
     {
       "tool": "search_knowledge",
-      "summary": "prompt injection in support-agent",
+      "summary": "VamsiHub prompt injection in personal-portfolio",
       "ok": true
     }
   ],
   "sources": [
-    "Resume"
+    "Resume",
+    "VamsiHub (this portfolio)"
   ],
   "retrievedSources": [
     "Resume",
-    "Retail Support AI Agent"
+    "VamsiHub (this portfolio)"
   ],
-  "latencyMs": 1548,
+  "latencyMs": 1349,
   "modelCalls": 2,
   "embedCalls": 1,
-  "promptTokens": 7060,
-  "outputTokens": 60,
-  "embedTokens": 9
+  "promptTokens": 6204,
+  "outputTokens": 93,
+  "embedTokens": 12
 }

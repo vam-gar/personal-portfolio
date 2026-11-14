@@ -2,9 +2,9 @@
   "caseId": "gemini-projects",
   "system": "agent",
   "model": "gemini-3.5-flash-lite",
-  "fingerprint": "c3c33cf89ea2",
-  "ranAt": "2026-11-14T23:09:25.284Z",
-  "reply": "Based on Vamsi's resume and project documentation, the following projects use the Gemini API:\n\n- **Retail Support AI Agent**: Uses the Gemini API alongside the Claude API for its support AI agent capabilities. (Source: resume)\n- **AI Travel Planner**: Uses the Gemini API to generate trip itineraries that are validated with Zod schemas. (Source: resume)\n- **VamsiHub** (his conversational portfolio assistant): Built on Gemini 2.5 Flash to ground answers in project and resume context. (Source: resume)\n\n*(Sources: resume, Retail Support AI Agent README, AI Travel Planner README, VamsiHub README)*",
+  "fingerprint": "c525d97a0099",
+  "ranAt": "2026-11-14T23:17:47.322Z",
+  "reply": "Based on Vamsi's resume and project documentation, the projects that use the Gemini API are:\n\n* **AI Travel Planner** (Source: resume)\n* **VamsiHub** (Source: resume)\n* **Retail Support AI Agent** (Sources: resume, support-agent README)",
   "steps": [],
   "sources": [
     "Resume"
@@ -12,10 +12,10 @@
   "retrievedSources": [
     "Resume"
   ],
-  "latencyMs": 969,
+  "latencyMs": 767,
   "modelCalls": 1,
   "embedCalls": 0,
-  "promptTokens": 2476,
-  "outputTokens": 135,
+  "promptTokens": 2501,
+  "outputTokens": 64,
   "embedTokens": 0
 }

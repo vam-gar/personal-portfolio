@@ -1,5 +1,9 @@
 // Grading. Deterministic checks decide pass/fail; the LLM judge is used
 // only for groundedness, on a different model from the subject.
+//
+// FROZEN as eval v1 (2026-11-14), together with cases.json. Do not change
+// the checks here, even to fix one; put changes in a v2 with its own
+// results. See evals/notes.md.
 
 import { createHash } from "node:crypto";
 import { extractText, generateContent } from "../lib/gemini";

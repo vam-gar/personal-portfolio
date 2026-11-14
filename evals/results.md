@@ -8,25 +8,26 @@ Generated 2026-11-14 by `npm run eval`. Do not edit by hand; the Decision and di
 
 | | Tools-only agent (v1) | Full context | Hybrid agent |
 | --- | ---: | ---: | ---: |
-| Cases passing deterministic checks | 18/20 | 21/21 | 21/21 |
-| Model calls per answer | 2.00 | 1.00 | 1.43 |
-| Input tokens per answer | 3,818 | 12,525 | 4,121 |
-| Estimated cost per 1,000 answers | $1.46 | $4.09 | $1.53 |
+| Cases passing deterministic checks | 18/20 | 21/21 | 20/21 |
+| Model calls per answer | 2.00 | 1.00 | 1.33 |
+| Input tokens per answer | 3,818 | 12,525 | 3,745 |
+| Estimated cost per 1,000 answers | $1.46 | $4.09 | $1.43 |
 | Median latency | 1.8 s | 1.2 s | 1.1 s |
 
 Why:
 
-- **It fixes what the first agent got wrong.** v1 failed both multi-source cases (0/2) because it answered from one search and never saw the rest of the resume. With the resume always in context the hybrid passes both (2/2), and 12 of its 21 answers need no tool call at all.
-- **It matches full context on these checks at a third of the input tokens** (4,121 vs 12,525 per answer; $1.53 vs $4.09 per 1,000 answers at list prices).
+- **It fixes what the first agent got wrong.** v1 failed both multi-source cases (0/2) because it answered from one search and never saw the rest of the resume. With the resume always in context the hybrid passes both (2/2), and 14 of its 21 answers need no tool call at all.
+- **It comes within one case of full context at under a third of the input tokens** (3,745 vs 12,525 per answer; $1.43 vs $4.09 per 1,000 answers at list prices).
 - **It does things full context cannot.** Live GitHub stats and contact drafts need tools. The full-context column "passes" those two cases only by correctly declining.
 
 What this does not show:
 
-- **Full context is not worse on accuracy.** At this corpus size (about 11,000 tokens) it passed every case with one model call. On the free tier, where the cap is requests per day rather than tokens, its 1.00 calls per answer serves about 40% more visitors than the hybrid's 1.43. If the tools were not wanted, full context would be the simpler choice until the READMEs outgrow the prompt.
-- **Groundedness of the hybrid agent is not yet judged.** The judge model's daily quota ran out; all 17 hybrid judgements and 14 others are pending. Run `npm run eval -- --keep-stale` to fill them in. The decision stands on the deterministic checks until then.
+- **Full context is at least as accurate.** At this corpus size (about 12,000 tokens) it passed every case with one model call, one more than the hybrid. On the free tier, where the cap is requests per day rather than tokens, its 1.00 calls per answer serves about a third more visitors than the hybrid's 1.33. If the tools were not wanted, full context would be the simpler choice until the READMEs outgrow the prompt.
+- **Groundedness of the hybrid agent is not yet judged.** The judge model's daily quota ran out; all 17 hybrid judgements and 14 others are pending. Run `npm run eval -- --keep-stale` to fill them in; at the observed 20 judge requests per day that takes two days. The decision stands on the deterministic checks until then.
+- **The hybrid's one failure in the final run is a wrong refusal.** On "How is the offline-first sync implemented in the Moksha Jewels app?" it gave the off-topic guardrail reply. Asked three more times, it refused once and answered correctly twice, so this is an intermittent defect in the shipped prompt, not a grading artefact. It is left failing; a fix belongs in v2.
 - **The hybrid's first run was 19/21.** It answered "Why PydanticAI over LangGraph?" from the resume without searching and said the docs did not cover it. The prompt now requires a search for any how/why question about a project, and the re-run found the answer. A model that skips the search is the failure mode to watch in this design.
 
-**Retrieval: hybrid search stays.** On six exact-term queries (FIFO, Tesseract, PydanticAI, Zod, TestModel, Null Island) vector search alone put a relevant chunk first for 2 of 6 and missed 2 entirely at k=5; BM25 and the hybrid ranker got 6 of 6 at rank 1. On 14 natural-language questions the hybrid costs one case: vector finds a relevant chunk in the top 3 for 14 of 14, the hybrid for 13 of 14 ("What is he working on right now?"). That miss is a resume question, which the shipped agent no longer retrieves for; on the README-only pool it actually searches, the hybrid is 4/4 on both query types. These are small samples.
+**Retrieval: hybrid search stays.** On six exact-term queries (FIFO, Tesseract, PydanticAI, Zod, TestModel, Null Island) vector search alone put a relevant chunk first for 2 of 6 and missed 2 entirely at k=5. BM25 got 6 of 6 at rank 1; the hybrid ranker got 4 of 6 at rank 1 and 6 of 6 in the top 3. On 14 natural-language questions the two are close: vector has a relevant chunk in the top 3 for 14 of 14, the hybrid for 13 of 14, and both reach 14 of 14 in the top 5. On the README-only pool the shipped agent actually searches, the hybrid is 4/4 in the top 3 on both query types. These are small samples, and the numbers moved when the rewritten README joined the index (the hybrid's exact-term hit@1 was 6 of 6 before), so treat single-case differences as noise.
 
 ## Changes made after seeing results
 
@@ -44,7 +45,17 @@ Changes to the systems and cases:
 5. Tool expectations were removed from the 12 cases answerable from the resume alone, because the hybrid agent correctly answers those without a tool.
 6. One `evaluative` case and six exact-term retrieval queries were added. The v1 column has no answer for the evaluative case.
 7. A keyword-search bug was fixed: the tokenizer kept backticks attached, so terms written as `code` in a README (for example `TestModel`) could not be found by BM25. The v1 answers were generated before this fix.
-8. The hybrid agent's prompt was tightened once after its first run (see above) and all 21 of its cases were re-run.
+8. The hybrid agent's prompt was tightened once after its first run (see above) and all 21 of its cases were re-run. That second run passed 21/21.
+9. A citation rule was added to the hybrid agent's prompt (cite only the resume or a source a tool returned), the portfolio README was rewritten and the index rebuilt. All 21 hybrid cases were then re-run a third time, so the hybrid column reflects the shipped prompt. That run passed 20/21 and is the one reported; no check was changed for it and it was not repeated.
+
+## Eval v1 is frozen
+
+As of 2026-11-14, `evals/cases.json` and the checks in `evals/grade.ts` are frozen as eval v1. They will not be edited again, including to fix a check that turns out to be wrong; a wrong check is reported as a known issue instead. Any new case, changed expectation or changed grading rule goes into a v2 with its own cases file, its own cached runs and its own results, so v1 numbers stay comparable over time.
+
+Two things about the v1 numbers to keep in mind:
+
+- The full-context answers were generated before the portfolio README was rewritten, so that column saw the old README in its prompt. They were reused as agreed rather than re-run.
+- The pending groundedness judgements are scored against the current corpus, which includes the rewritten README.
 
 ## Setup
 
@@ -54,9 +65,9 @@ Changes to the systems and cases:
 - **Subject model:** `gemini-3.5-flash-lite` for every system, temperature 0.3, one run per case.
 - **Judge model:** `gemini-4-hydrogen`, used only for groundedness.
 - **Cases:** 21 answered (resume-fact, project-detail, multi-source, evaluative, embellishment, unanswerable, refusal, live-data, contact, multi-turn), plus 6 exact-term queries used for retrieval only.
-- **Corpus:** resume + 3 READMEs, 55 chunks, about 11,049 tokens in full.
+- **Corpus:** resume + 3 READMEs, 60 chunks, about 12,224 tokens in full.
 
-**Reused answers:** 20 full-context answers were generated before the evaluative-question rule was added to the shared prompt and were reused rather than re-run. Only the `evaluative` case exercises that rule, and it was run fresh.
+**Reused answers:** 21 full-context answers were generated before the evaluative-question rule was added to the shared prompt and were reused rather than re-run. Only the `evaluative` case exercises that rule, and it was run fresh.
 
 ## Incomplete run
 
@@ -69,24 +80,24 @@ Numbers below cover completed cases only. Run `npm run eval` again to fill in th
 | Metric | Tools-only agent (v1) | Full context | Hybrid agent |
 | --- | ---: | ---: | ---: |
 | Cases completed | 20/21 | 21/21 | 21/21 |
-| **Cases passing all deterministic checks** | **90% (18/20)** | **100% (21/21)** | **100% (21/21)** |
-| Fact recall (mean over cases with expected facts) | 94% | 100% | 100% |
+| **Cases passing all deterministic checks** | **90% (18/20)** | **100% (21/21)** | **95% (20/21)** |
+| Fact recall (mean over cases with expected facts) | 94% | 100% | 94% |
 | No forbidden claims | 100% (10/10) | 100% (12/12) | 100% (11/11) |
 | Correct off-topic refusal | 100% (2/2) | 100% (2/2) | 100% (2/2) |
-| Says so when sources lack the answer | 100% (3/3) | 100% (4/4) | 100% (3/3) |
+| Says so when sources lack the answer | 100% (3/3) | 100% (4/4) | 67% (2/3) |
 | Cites the expected source | 100% (11/11) | 100% (10/10) | 100% (11/11) |
 | Calls an expected tool | 100% (6/6) | n/a | 100% (6/6) |
 | No tools on off-topic | 100% (2/2) | n/a | 100% (2/2) |
 | Groundedness: fully grounded (judge) | 91% (10/11) | 100% (11/11) | – |
 | Groundedness score (1 / 0.5 / 0) | 0.91 | 1.00 | – |
 | Latency, median (s) | 1.8 | 1.2 | 1.1 |
-| Latency, max (s) | 12.5 | 2.2 | 2.2 |
-| Model calls per answer (mean) | 2.00 | 1.00 | 1.43 |
-| Embedding calls per answer (mean) | 0.60 | 0.00 | 0.33 |
-| Input tokens per answer (mean) | 3,818 | 12,525 | 4,121 |
-| Output tokens per answer (mean) | 127 | 134 | 118 |
-| Estimated cost per answer | $0.00146 | $0.00409 | $0.00153 |
-| Estimated cost per 1,000 answers | $1.46 | $4.09 | $1.53 |
+| Latency, max (s) | 12.5 | 2.2 | 2.8 |
+| Model calls per answer (mean) | 2.00 | 1.00 | 1.33 |
+| Embedding calls per answer (mean) | 0.60 | 0.00 | 0.24 |
+| Input tokens per answer (mean) | 3,818 | 12,525 | 3,745 |
+| Output tokens per answer (mean) | 127 | 134 | 121 |
+| Estimated cost per answer | $0.00146 | $0.00409 | $0.00143 |
+| Estimated cost per 1,000 answers | $1.46 | $4.09 | $1.43 |
 
 Cost uses paid-tier list prices; on the free tier both systems cost nothing but are capped by requests per day, so model calls per answer is the binding number there. Output tokens include thinking tokens. Latency is wall-clock on the free tier and includes tool calls (embedding, GitHub).
 
@@ -98,7 +109,7 @@ Cost uses paid-tier list prices; on the free tier both systems cost nothing but 
 | project-detail | 4 | 4/4 | 4/4 | 4/4 |
 | multi-source | 2 | 0/2 | 2/2 | 2/2 |
 | evaluative | 1 | – | 1/1 | 1/1 |
-| embellishment | 3 | 3/3 | 3/3 | 3/3 |
+| embellishment | 3 | 3/3 | 3/3 | 2/3 |
 | unanswerable | 2 | 2/2 | 2/2 | 2/2 |
 | refusal | 2 | 2/2 | 2/2 | 2/2 |
 | live-data | 1 | 1/1 | 1/1 | 1/1 |
@@ -122,7 +133,7 @@ Cost uses paid-tier list prices; on the free tier both systems cost nothing but 
 | strongest-project | evaluative | not run | ✅ | ✅ | – | pending | pending |
 | fifo-how | embellishment | ✅ | ✅ | ✅ | ✅ | ✅ | pending |
 | vamsihub-injection | embellishment | ✅ | ✅ | ✅ | pending | pending | pending |
-| offline-sync-how | embellishment | ✅ | ✅ | ✅ | pending | pending | pending |
+| offline-sync-how | embellishment | ✅ | ✅ | ❌ facts, declines | pending | pending | pending |
 | ocr-accuracy | unanswerable | ✅ | ✅ | ✅ | pending | pending | pending |
 | kubernetes-rust | unanswerable | ✅ | ✅ | ✅ | pending | pending | pending |
 | recipe | refusal | ✅ | ✅ | ✅ | n/a | n/a | n/a |
@@ -141,19 +152,19 @@ Whether a chunk that answers the query appears in the top k, using the query ver
 
 | Ranker | hit@1 | hit@3 | hit@5 | MRR |
 | --- | ---: | ---: | ---: | ---: |
-| Vector (cosine) | 13/14 | 14/14 | 14/14 | 0.95 |
-| Keyword (BM25) | 12/14 | 12/14 | 12/14 | 0.86 |
-| Hybrid (RRF) | 13/14 | 13/14 | 13/14 | 0.94 |
+| Vector (cosine) | 11/14 | 14/14 | 14/14 | 0.89 |
+| Keyword (BM25) | 11/14 | 12/14 | 12/14 | 0.82 |
+| Hybrid (RRF) | 12/14 | 13/14 | 14/14 | 0.91 |
 
-Not in the top 5: education (keyword), current-work (keyword), current-work (hybrid).
+Not in the top 5: education (keyword), current-work (keyword).
 
 **Exact-term queries** (6 queries)
 
 | Ranker | hit@1 | hit@3 | hit@5 | MRR |
 | --- | ---: | ---: | ---: | ---: |
-| Vector (cosine) | 2/6 | 2/6 | 4/6 | 0.43 |
+| Vector (cosine) | 2/6 | 2/6 | 4/6 | 0.42 |
 | Keyword (BM25) | 6/6 | 6/6 | 6/6 | 1.00 |
-| Hybrid (RRF) | 6/6 | 6/6 | 6/6 | 1.00 |
+| Hybrid (RRF) | 4/6 | 6/6 | 6/6 | 0.83 |
 
 Not in the top 5: term-tesseract (vector), term-testmodel (vector).
 
@@ -173,13 +184,13 @@ No misses at k=5.
 
 | Ranker | hit@1 | hit@3 | hit@5 | MRR |
 | --- | ---: | ---: | ---: | ---: |
-| Vector (cosine) | 1/4 | 2/4 | 3/4 | 0.40 |
+| Vector (cosine) | 1/4 | 2/4 | 3/4 | 0.44 |
 | Keyword (BM25) | 4/4 | 4/4 | 4/4 | 1.00 |
-| Hybrid (RRF) | 4/4 | 4/4 | 4/4 | 1.00 |
+| Hybrid (RRF) | 3/4 | 4/4 | 4/4 | 0.88 |
 
 Not in the top 5: term-testmodel (vector).
 
-Share of hybrid top-5 slots by source, whole index, natural-language questions: Resume 43% of top-5 slots (16% of the index); Retail Support AI Agent 24% of top-5 slots (42% of the index); VamsiHub (this portfolio) 19% of top-5 slots (20% of the index); AI Travel Planner 14% of top-5 slots (22% of the index).
+Share of hybrid top-5 slots by source, whole index, natural-language questions: Resume 47% of top-5 slots (15% of the index); Retail Support AI Agent 21% of top-5 slots (38% of the index); VamsiHub (this portfolio) 17% of top-5 slots (27% of the index); AI Travel Planner 14% of top-5 slots (20% of the index).
 
 ## Failing cases
 
@@ -219,6 +230,17 @@ Share of hybrid top-5 slots by source, whole index, natural-language questions: 
 > His resume does not list professional work experience building LLM evals outside of this project.
 > 
 > (Sources: resume, Retail Support AI Agent README)
+
+### offline-sync-how — Hybrid agent
+
+**Question:** How is the offline-first sync implemented in the Moksha Jewels app?
+
+- ❌ `facts`: missing: offline-first
+- ❌ `declines`
+
+**Reply:**
+
+> I am only configured to answer questions regarding Vamsi's professional background, technical skills, and engineering projects. Please feel free to ask about his experiences at CVS Health, his current MS AI program at UT Austin, or his featured showcase applications!
 
 ## How to read this
 

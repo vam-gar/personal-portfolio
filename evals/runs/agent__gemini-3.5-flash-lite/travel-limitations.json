@@ -2,9 +2,9 @@
   "caseId": "travel-limitations",
   "system": "agent",
   "model": "gemini-3.5-flash-lite",
-  "fingerprint": "13c6aeeac1dc",
-  "ranAt": "2026-11-14T23:09:17.398Z",
-  "reply": "The known limitations of the AI Travel Planner are:\n\n- **Coordinates are model-generated:** While the guard catches impossible and Null-Island values, a valid-but-slightly-wrong pin is inherent to LLM output (real verification would require a reverse-geocode lookup per stop).\n- **In-memory rate limiter:** The rate limiter is in-memory and per-instance, which is fine for a demo, but should be swapped for `@upstash/ratelimit` (Redis) if a hard global cap is needed.\n- **Desktop-first dashboard:** Below the `lg` breakpoint, the panels stack and scroll.\n\n(Source: AI Travel Planner README)",
+  "fingerprint": "c8c16b1decb7",
+  "ranAt": "2026-11-14T23:17:39.382Z",
+  "reply": "The known limitations of the AI Travel Planner are:\n\n- **Coordinates are model-generated:** The guard catches impossible and Null-Island values, but a valid-but-slightly-wrong pin is inherent to LLM output (real verification would need a reverse-geocode lookup per stop).\n- **The rate limiter is in-memory and per-instance:** This is fine for a demo, but should be swapped for `@upstash/ratelimit` (Redis) if a hard global cap is needed.\n- **The dashboard is desktop-first:** Below the `lg` breakpoint, the panels stack and scroll.\n\n(Sources: resume, AI Travel Planner README)",
   "steps": [
     {
       "tool": "search_knowledge",
@@ -13,16 +13,17 @@
     }
   ],
   "sources": [
+    "Resume",
     "AI Travel Planner"
   ],
   "retrievedSources": [
     "Resume",
     "AI Travel Planner"
   ],
-  "latencyMs": 1878,
+  "latencyMs": 1934,
   "modelCalls": 2,
   "embedCalls": 1,
-  "promptTokens": 6137,
-  "outputTokens": 167,
+  "promptTokens": 6187,
+  "outputTokens": 165,
   "embedTokens": 8
 }
