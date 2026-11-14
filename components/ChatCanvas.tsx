@@ -290,14 +290,11 @@ function renderChannel(id: string) {
       return <EducationFeed />;
     case "experience":
       return <ExperienceFeed />;
-    case "ucsc-chess-engine":
-    case "ai-travel-planner":
-    case "wordle-solver":
-      return <ProjectEmbed id={id} />;
     case "contact-form":
       return <ContactForm />;
     default:
-      return <WelcomeMessage />;
+      // Any channel backed by a PROJECTS entry renders as a project embed.
+      return PROJECTS[id] ? <ProjectEmbed id={id} /> : <WelcomeMessage />;
   }
 }
 
@@ -383,7 +380,7 @@ function WelcomeMessage() {
             <li>
               Explore the{" "}
               <span className="font-semibold text-white">SHOWCASE</span> category
-              channels to audit my top 3 core engineering projects.
+              channels to audit my featured engineering projects.
             </li>
           </ul>
         </div>
@@ -525,6 +522,7 @@ function ExperienceFeed() {
             <div key={x.org} className="rounded-md bg-[#2b2d31] px-4 py-3">
               <p className="font-semibold text-white">{x.org}</p>
               <p className="text-discord-text">{x.role}</p>
+              <p className="text-xs text-discord-muted">{x.period}</p>
               <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-discord-text marker:text-discord-muted">
                 {x.bullets.map((b, i) => (
                   <li key={i}>{b}</li>

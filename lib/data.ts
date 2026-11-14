@@ -24,9 +24,8 @@ export const CATEGORIES: Category[] = [
   {
     name: "SHOWCASE",
     channels: [
-      { id: "ucsc-chess-engine", emoji: "🚀", label: "ucsc-chess-engine" },
+      { id: "support-agent", emoji: "🚀", label: "support-agent" },
       { id: "ai-travel-planner", emoji: "🚀", label: "ai-travel-planner" },
-      { id: "wordle-solver", emoji: "🚀", label: "wordle-solver" },
     ],
   },
   {
@@ -50,43 +49,58 @@ export const SKILLS: { group: string; items: string[] }[] = [
       "Python",
       "TypeScript",
       "JavaScript",
+      "SQL",
+      "Go",
+      "Java",
       "C++",
       "C",
-      "Java",
-      "SQL",
       "HTML/CSS",
     ],
   },
   {
-    group: "Frameworks & Web",
-    items: ["React", "Next.js", "Node.js", "Flask", "FastAPI", "RESTful APIs"],
-  },
-  {
-    group: "AI & Data Libraries",
+    group: "AI / LLM",
     items: [
-      "PyTorch",
-      "TensorFlow",
-      "Keras",
-      "YOLO",
-      "CNNs",
-      "OpenAI GPT-4 API",
-      "Gemini API",
-      "Claude API",
-      "NumPy",
-      "Pandas",
+      "AI Agents",
+      "Tool Calling",
+      "Evals",
+      "Prompt Engineering",
+      "Structured Outputs",
+      "Guardrails",
+      "LLM Observability",
+      "RAG",
+      "PydanticAI",
+      "LangChain",
+      "OpenAI/Gemini/Claude APIs",
     ],
   },
   {
-    group: "Developer Tools & Data",
+    group: "Frameworks",
     items: [
-      "Web Scraping (Playwright)",
-      "Data Pipelines",
+      "Next.js",
+      "React",
+      "Node.js",
+      "Flask",
+      "Streamlit",
+      "Tailwind CSS",
+      "PyTorch",
+      "TensorFlow",
+      "Pytest",
+    ],
+  },
+  {
+    group: "Data and Infra",
+    items: [
       "PostgreSQL",
+      "Supabase",
+      "MongoDB",
+      "Pinecone",
+      "Pandas",
+      "NumPy",
       "Docker",
+      "Azure",
+      "Vercel",
       "Git",
       "Linux",
-      "Azure",
-      "Postman",
     ],
   },
 ];
@@ -107,25 +121,26 @@ export type Project = {
 };
 
 export const PROJECTS: Record<string, Project> = {
-  "ucsc-chess-engine": {
-    id: "ucsc-chess-engine",
+  "support-agent": {
+    id: "support-agent",
     subtitle:
-      "A full-stack chess platform with competitive ranked matches and a minimax AI opponent.",
-    title: "♟️ UCSC Chess Engine",
+      "A customer-facing support agent with code-enforced policy guardrails and a multi-turn eval suite.",
+    title: "🎧 Retail Support AI Agent",
     description:
-      "A full-stack chess platform that lets UCSC students compete in ranked matches and play against an AI opponent powered by the minimax algorithm with adjustable difficulty levels.",
+      "A customer-facing support AI agent with schema-validated tool calling for orders, returns, and retention offers. Policy guardrails and a human-handoff circuit breaker are enforced in code and covered by 51 Pytest tests. A tau-bench-style eval framework of 12 multi-turn scenarios, graded on final database state, raised task success from 75% to 100% and escalation accuracy from 83% to 100%.",
     fields: [
-      { name: "Focus", value: "Full Stack Web Architecture & Game AI" },
+      { name: "Focus", value: "AI Agents, Tool Calling, Guardrails & Evals" },
     ],
-    tags: ["Python", "Flask", "React.js", "Node.js", "Express.js", "MongoDB"],
+    tags: ["Python", "PydanticAI", "Gemini API", "Claude API", "Streamlit", "Pytest"],
+    github: "https://github.com/vam-gar/support-agent",
   },
   "ai-travel-planner": {
     id: "ai-travel-planner",
     subtitle:
-      "An automated full-stack itinerary generator powered by the Gemini API.",
+      "A trip planner that validates Gemini itineraries and maps every day's route.",
     title: "✈️ AI Travel Planner",
     description:
-      "A dynamic, full-stack web application that integrates the Gemini API to generate highly customized, multi-day travel itineraries based on user destinations, budgets, and leisure preferences.",
+      "A trip planner that validates Gemini itineraries with Zod schemas, retrying or flagging invalid responses. Each itinerary location is geocoded and every day's route is plotted on an interactive Leaflet map.",
     fields: [
       {
         name: "Focus",
@@ -136,60 +151,59 @@ export const PROJECTS: Record<string, Project> = {
     github: "https://github.com/vam-gar/ai-travel-planner",
     accent: "#2ecc71",
   },
-  "wordle-solver": {
-    id: "wordle-solver",
-    subtitle:
-      "An optimized algorithmic solver designed to evaluate state spaces and solve Wordle puzzles.",
-    title: "📝 Wordle Solver",
-    description:
-      "An intelligent puzzle-solving engine engineered to calculate optimal letter guesses. The system parses structural constraints and character frequencies to minimize the average guess count across large dictionary sets.",
-    fields: [
-      {
-        name: "Focus",
-        value: "Algorithmic Problem Solving & State Space Pruning",
-      },
-    ],
-    tags: ["Python", "Data Structures", "Algorithms", "Git"],
-    github: "https://github.com/vam-gar/wordle-guesser",
-    accent: "#f1c40f",
-  },
 };
 
 // ---- Education / Experience simple feeds ----
 export const EDUCATION = [
   {
     school: "The University of Texas at Austin",
-    detail: "Master of Science in Artificial Intelligence",
-    period: "2024 — Present",
+    detail: "Master of Science in Artificial Intelligence (Online/Part Time)",
+    period: "Expected May 2027",
   },
   {
     school: "University of California, Santa Cruz",
     detail: "Bachelor of Science in Computer Science",
-    period: "2020 — 2024",
+    period: "March 2024",
   },
 ];
 
 export type Experience = {
   org: string;
   role: string;
+  period: string;
   bullets: string[];
 };
 
 export const EXPERIENCE: Experience[] = [
   {
+    org: "Moksha Jewels",
+    role: "Freelance Software Developer",
+    period: "Sep. 2026 — Present",
+    bullets: [
+      "Shipped a full-stack vendor payables web app (React, Supabase PostgreSQL, Vercel) used daily by a diamond jewelry retailer to track supplier invoices, payments, landed costs, and vendor balances.",
+      "Worked directly with the store owner to gather requirements, then designed a 10-table relational schema with row-level security, role-based access control, and offline-first sync.",
+      "Built an OCR invoice-parsing pipeline (pdf.js, Tesseract) and a FIFO payment engine that settles the oldest invoices first through one transactional Postgres function with idempotent upserts.",
+    ],
+  },
+  {
     org: "CVS Health",
     role: "Software Developer",
+    period: "Jul. 2024 — Jul. 2025",
     bullets: [
-      "Developed Python RESTful APIs to integrate the OpenAI GPT-4 multimodal API into GAILE, CVS Health's internal AI assistant, and implemented feedback tracking endpoints for ratings and comments.",
-      "Engineered automated Python data processing pipelines to transform and validate 53,000+ monthly healthcare records, maximizing reporting accuracy and data integrity.",
+      "Built production Python REST APIs on Azure Functions for GAILE, CVS's internal conversational AI platform used by hundreds of employees, adding GPT-4 multimodal image analysis and summarization.",
+      "Worked directly with business stakeholders to gather requirements, demo releases, and fix user-reported issues.",
+      "Wrote telemetry endpoints storing user ratings, comments, and prompt metadata in Cosmos DB as a human-in-the-loop eval loop; the data drove prompt fixes, surfaced bugs, and prioritized new features.",
+      "Wrote Python pipelines parsing multiple types of unstructured healthcare and enterprise forms (RFPs, medical records) into structured JSON for downstream LLM workflows, reducing manual data entry.",
+      "Automated the monthly healthcare data load, validating and backfilling 53,000+ records with unit tests.",
     ],
   },
   {
     org: "SVAYO",
-    role: "Artificial Intelligence / Machine Learning Intern",
+    role: "Artificial Intelligence & Machine Learning Intern",
+    period: "Jul. 2023 — Sep. 2023",
     bullets: [
-      "Built and fine-tuned YOLO and CNN-based deep learning models using PyTorch and TensorFlow to automate object detection with 92% accuracy.",
-      "Led iterative model evaluations and hyperparameter optimization, successfully reducing false positive detections by 15%.",
+      "Trained custom CNN and YOLO models in PyTorch and TensorFlow for facial skin feature detection and acne classification, reaching 92% detection accuracy.",
+      "Cut false positives by 15% through hyperparameter tuning and iterative model evaluations, and benchmarked R-CNN, Faster R-CNN, and YOLO on latency vs. accuracy for real-time inference.",
     ],
   },
 ];
