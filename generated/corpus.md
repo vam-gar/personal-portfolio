@@ -540,6 +540,8 @@ The route, [`app/api/chat/route.ts`](app/api/chat/route.ts), validates input, ke
 
 Grading is mostly deterministic: expected facts present, forbidden claims absent, correct refusals, and the right tool and source used. A separate judge model scores groundedness only. Answers are cached per case, so a run interrupted by a quota error resumes where it stopped.
 
+The eval is versioned. **v1** is the three-way comparison above; its cases, checks and answers are frozen so its numbers stay comparable. **v2** measures changes made since then on the hybrid agent alone, and runs every case three times so that intermittent failures show up.
+
 ---
 
 ## Eval results
@@ -556,6 +558,19 @@ Results from eval v1, 21 answered cases on `gemini-3.5-flash-lite`, one run per 
 | Estimated cost per 1,000 answers | $1.46 | $4.09 | $1.43 |
 
 The hybrid agent's one failure was a wrong refusal: it gave the off-topic reply to an in-scope question about a freelance project. Repeating the question shows this happens intermittently. Groundedness judgements for the hybrid agent were still pending when this was written; see the report for their current state.
+
+### Eval v2: the hybrid agent, three trials per case
+
+After v1, two prompt rules were added: questions about anything on the resume are in scope even when the detail is missing, and acronyms are not expanded unless the source expands them. v2 re-runs the hybrid agent on 25 cases, three times each.
+
+| Metric | Hybrid agent |
+| --- | ---: |
+| Trials passing all checks | 74/75 |
+| Cases where all three trials passed | 24/25 |
+| Off-topic refusals given to in-scope questions | 0 of 66 trials |
+| Model calls per answer | 1.32 |
+
+v2 uses stricter and broader checks than v1 and has no groundedness judge, so its numbers are not directly comparable with the table above.
 
 ### Retrieval on exact-term queries
 
@@ -622,7 +637,10 @@ Full context is at least as accurate at this corpus size (it passed every case),
 │   ├── agent/                # loop.ts, tools.ts, prompt.ts
 │   └── rag/                  # latex.ts, chunk.ts, search.ts
 ├── scripts/                  # build-index.ts, search.ts, chat.ts
-└── evals/                    # cases.json, run.ts, grade.ts, results.md, runs/
+└── evals/
+    ├── results.md            # Combined report: frozen v1, then v2
+    ├── v1/, v2/              # Each suite's cases, cached runs and notes
+    └── run.ts, run-v2.ts, grade.ts, systems.ts
 ```
 
 The channels a visitor sees come from [`lib/data.ts`](lib/data.ts); what the bot knows comes from `content/`. Change both when the resume changes.
@@ -655,7 +673,8 @@ npm run dev                        # http://localhost:3000
 | `npm run index` | Rebuild `generated/` from `content/`. Add `-- --dry-run` to print chunks without calling the API |
 | `npm run search -- "query"` | Show vector, keyword and hybrid rankings side by side |
 | `npm run chat -- "question" "follow-up"` | Talk to the agent from the terminal |
-| `npm run eval` | Run missing eval cases and rewrite `evals/results.md` |
+| `npm run eval` | Run missing eval v2 trials and rewrite `evals/results.md` |
+| `npm run eval:v1` | Fill in pending judgements for the frozen v1 eval; never generates answers |
 | `npm run typecheck` | `tsc --noEmit` |
 
 ### Updating what the bot knows
@@ -677,7 +696,7 @@ Import the repo into Vercel, set the environment variables above under **Setting
 - **Free-tier quotas are small.** Gemini's free tier caps requests per day per model, and each answer costs one to three model calls. When the quota runs out the bot says so and points to the contact form.
 - **The rate limiter is per server instance.** It resets on a cold start and is not shared across instances, so it slows casual abuse rather than enforcing a global cap.
 - **Source tags depend on the model's source line.** A source is tagged only when the reply's closing source line names it.
-- **The eval is small.** 21 cases and one run each; a difference of one case is noise.
+- **The eval is small.** v1 has 21 cases and one run each; v2 has 25 cases and three runs each. A difference of one case is noise.
 
 ---
 
