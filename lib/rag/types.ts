@@ -13,12 +13,15 @@ export type IndexedChunk = Chunk & { embedding: number[] };
 
 export type ResumeSection = { name: string; text: string };
 
+// generated/resume.json: the whole resume as plain text, placed in the
+// agent's system prompt.
+export type ResumeDoc = { name: string; sections: ResumeSection[] };
+
 export type RagIndex = {
   version: 1;
   embedModel: string;
   dims: number;
   builtAt: string;
-  resumeSections: ResumeSection[];
   chunks: IndexedChunk[];
 };
 

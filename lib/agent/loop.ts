@@ -1,4 +1,5 @@
-// The vamsi-bot agent loop: Gemini function calling over the four tools.
+// The vamsi-bot agent loop. The resume sits in the system prompt; Gemini
+// function calling covers README search, live GitHub stats and contact drafts.
 // Shared by the chat route and the eval harness.
 
 import { Content, Part, extractText, generateContent } from "../gemini";
@@ -7,6 +8,7 @@ import { Source, TOOL_DECLARATIONS, UiAction, executeTool } from "./tools";
 
 export const MAX_ITERATIONS = 5;
 const TEMPERATURE = 0.3;
+const RESUME_SOURCE: Source = { name: "Resume" };
 const FALLBACK_REPLY = "Sorry, I couldn't generate a response just now.";
 
 export type Step = {
@@ -46,7 +48,7 @@ export function citedSources(reply: string, retrieved: Source[]): Source[] {
 }
 
 function summarize(args: Record<string, unknown> = {}): string {
-  const text = String(args.query ?? args.section ?? args.target ?? "");
+  const text = String(args.query ?? args.target ?? "");
   const scope = args.source ? ` in ${args.source}` : "";
   return (text + scope).slice(0, 120);
 }
@@ -63,7 +65,8 @@ export async function runAgent(
   ];
 
   const steps: Step[] = [];
-  const sources = new Map<string, Source>();
+  // The resume is always in the prompt, so it is always a citable source.
+  const sources = new Map<string, Source>([[RESUME_SOURCE.name, RESUME_SOURCE]]);
   let contactDraft: UiAction | undefined;
   const usage = { apiCalls: 0, promptTokens: 0, outputTokens: 0 };
   let reply = "";

@@ -6,22 +6,16 @@
 import sources from "../../content/sources.json";
 import { FunctionDeclaration } from "../gemini";
 import { getProfileStats, getRepoStats } from "../github";
-import { hybridSearch, index } from "../rag/search";
+import { hybridSearch } from "../rag/search";
 
 // ---- allowlists derived from content/ ----
 const REPOS = new Map(sources.repos.map((r) => [r.repo.split("/")[1], r.repo]));
 const GITHUB_USER = sources.repos[0].repo.split("/")[0];
-const SOURCE_FILTERS = new Map<string, string>([
-  ["resume", "resume"],
-  ...sources.repos.map((r) => [r.repo.split("/")[1], `repo:${r.repo}`] as [string, string]),
-]);
-const SECTION_ALIASES: Record<string, string> = {
-  contact: "Contact",
-  experience: "Experience",
-  projects: "Projects",
-  skills: "Technical Skills",
-  education: "Education",
-};
+// search_knowledge covers the project READMEs only: the resume is already
+// in the system prompt, so resume chunks would just take up result slots.
+const README_SOURCES = new Map(
+  sources.repos.map((r) => [r.repo.split("/")[1], `repo:${r.repo}`] as [string, string])
+);
 
 // Something the UI should render alongside the reply. The model can only
 // draft a contact message; sending happens client-side after the visitor
@@ -46,38 +40,22 @@ export const TOOL_DECLARATIONS: FunctionDeclaration[] = [
   {
     name: "search_knowledge",
     description:
-      "Hybrid semantic + keyword search over Vamsi's resume and the READMEs of his indexed projects. Use for any question about what he built, how a project works, design decisions, results or technologies. Returns the most relevant passages with their source.",
+      "Hybrid semantic + keyword search over the READMEs of Vamsi's indexed projects. Use for anything about a project beyond the resume's summary: how it works, architecture, design decisions, results, limitations, setup. Returns the most relevant passages with their source.",
     parameters: {
       type: "object",
       properties: {
         query: {
           type: "string",
           description:
-            "A focused search query. Include exact names when known (e.g. 'PydanticAI', 'FIFO payment engine').",
+            "A focused search query. Include exact names when known (e.g. 'PydanticAI', 'streamObject').",
         },
         source: {
           type: "string",
-          enum: Array.from(SOURCE_FILTERS.keys()),
-          description: "Optional: restrict the search to the resume or one project's README.",
+          enum: Array.from(README_SOURCES.keys()),
+          description: "Optional: restrict the search to one project's README.",
         },
       },
       required: ["query"],
-    },
-  },
-  {
-    name: "get_resume_section",
-    description:
-      "Returns one complete section of Vamsi's resume verbatim. Prefer this over search for overview questions such as 'what is his work history', 'list his skills', 'where did he study' or 'how can I reach him'.",
-    parameters: {
-      type: "object",
-      properties: {
-        section: {
-          type: "string",
-          enum: [...Object.keys(SECTION_ALIASES), "all"],
-          description: "Which section to return; 'all' returns the whole resume.",
-        },
-      },
-      required: ["section"],
     },
   },
   {
@@ -115,20 +93,19 @@ export const TOOL_DECLARATIONS: FunctionDeclaration[] = [
   },
 ];
 
-const RESUME_SOURCE: Source = { name: "Resume" };
-
 const str = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
 async function searchKnowledge(args: Record<string, unknown>): Promise<ToolResult> {
   const query = str(args.query, 300);
   if (!query) return { response: { error: "query is required." } };
   const sourceKey = str(args.source, 60);
-  if (sourceKey && !SOURCE_FILTERS.has(sourceKey)) {
+  if (sourceKey && !README_SOURCES.has(sourceKey)) {
     return { response: { error: `Unknown source "${sourceKey}".` } };
   }
+  const only = README_SOURCES.get(sourceKey);
   const { hits, usedVectors } = await hybridSearch(query, {
     k: 5,
-    source: SOURCE_FILTERS.get(sourceKey),
+    filter: (c) => (only ? c.source === only : c.source !== "resume"),
   });
   return {
     response: {
@@ -143,28 +120,6 @@ async function searchKnowledge(args: Record<string, unknown>): Promise<ToolResul
       ...(usedVectors ? {} : { note: "Semantic search was unavailable; keyword results only." }),
     },
     sources: hits.map((h) => ({ name: h.chunk.title, url: h.chunk.url })),
-  };
-}
-
-function getResumeSection(args: Record<string, unknown>): ToolResult {
-  const key = str(args.section, 30).toLowerCase();
-  if (key === "all") {
-    return {
-      response: {
-        resume: index.resumeSections.map((s) => `${s.name}\n${s.text}`).join("\n\n"),
-      },
-      sources: [RESUME_SOURCE],
-    };
-  }
-  const section = index.resumeSections.find((s) => s.name === SECTION_ALIASES[key]);
-  if (!section) {
-    return {
-      response: { error: `Unknown section "${key}". Use one of: ${Object.keys(SECTION_ALIASES).join(", ")}, all.` },
-    };
-  }
-  return {
-    response: { section: section.name, text: section.text },
-    sources: [RESUME_SOURCE],
   };
 }
 
@@ -215,8 +170,6 @@ export async function executeTool(name: string, args: Record<string, unknown> = 
   switch (name) {
     case "search_knowledge":
       return searchKnowledge(args);
-    case "get_resume_section":
-      return getResumeSection(args);
     case "get_github_stats":
       return getGithubStats(args);
     case "draft_contact_message":

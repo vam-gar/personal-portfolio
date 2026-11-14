@@ -30,18 +30,19 @@ export type SearchHit = {
 
 export type SearchOptions = {
   k?: number;
-  source?: string; // restrict to one chunk.source
+  filter?: ChunkFilter; // restrict the searchable chunks
   queryEmbedding?: number[]; // skip the embedding call (evals, tests)
 };
 
-const pool = (source?: string) =>
-  source ? index.chunks.filter((c) => c.source === source) : index.chunks;
+export type ChunkFilter = (chunk: IndexedChunk) => boolean;
+
+const pool = (filter?: ChunkFilter) => (filter ? index.chunks.filter(filter) : index.chunks);
 
 // ---- vector ----
 // Stored vectors and gemini-embedding-2 query vectors are unit length, so
 // the dot product is the cosine similarity.
-export function vectorSearch(queryEmbedding: number[], k: number, source?: string): Ranked[] {
-  return pool(source)
+export function vectorSearch(queryEmbedding: number[], k: number, filter?: ChunkFilter): Ranked[] {
+  return pool(filter)
     .map((chunk) => {
       let dot = 0;
       for (let i = 0; i < queryEmbedding.length; i++) dot += queryEmbedding[i] * chunk.embedding[i];
@@ -71,6 +72,10 @@ function keywordIndex(): MiniSearch<IndexedChunk> {
   if (!mini) {
     mini = new MiniSearch<IndexedChunk>({
       fields: ["text", "section", "title"],
+      // Split on everything except (Latin) letters, digits, + and #. MiniSearch's
+      // default keeps backticks attached, which made every `code` term in a
+      // README unsearchable ("`TestModel`" never matched "TestModel").
+      tokenize: (text) => text.split(/[^A-Za-z0-9\u00C0-\u024F+#]+/).filter(Boolean),
       // Applied to documents and queries alike. Without it, the filler in a
       // question ("where did he go to...") outvotes the vector ranking.
       processTerm: (term) => {
@@ -88,11 +93,11 @@ function keywordIndex(): MiniSearch<IndexedChunk> {
   return mini;
 }
 
-export function keywordSearch(query: string, k: number, source?: string): Ranked[] {
+export function keywordSearch(query: string, k: number, filter?: ChunkFilter): Ranked[] {
   return keywordIndex()
     .search(query)
     .map((r) => ({ chunk: byId.get(r.id as string)!, score: r.score }))
-    .filter((r) => !source || r.chunk.source === source)
+    .filter((r) => !filter || filter(r.chunk))
     .slice(0, k);
 }
 
@@ -125,7 +130,7 @@ export type SearchResult = {
 
 export async function hybridSearch(query: string, opts: SearchOptions = {}): Promise<SearchResult> {
   const k = opts.k ?? 5;
-  const keyword = keywordSearch(query, CANDIDATES, opts.source);
+  const keyword = keywordSearch(query, CANDIDATES, opts.filter);
 
   let embedding = opts.queryEmbedding;
   if (!embedding) {
@@ -138,6 +143,6 @@ export async function hybridSearch(query: string, opts: SearchOptions = {}): Pro
       return { hits: fuse([], keyword, k), usedVectors: false };
     }
   }
-  const vector = vectorSearch(embedding, CANDIDATES, opts.source);
+  const vector = vectorSearch(embedding, CANDIDATES, opts.filter);
   return { hits: fuse(vector, keyword, k), usedVectors: true };
 }

@@ -1,5 +1,6 @@
 // Builds the committed RAG artifacts from content/:
-//   generated/index.json  chunks + embeddings + resume sections
+//   generated/index.json  chunks + embeddings
+//   generated/resume.json the resume as plain-text sections (system prompt)
 //   generated/corpus.md   the full source text (full-context eval baseline)
 //
 //   npm run index             parse, chunk, embed, write both files
@@ -17,7 +18,7 @@ import {
 } from "../lib/gemini";
 import { chunkMarkdown } from "../lib/rag/chunk";
 import { parseResume } from "../lib/rag/latex";
-import { Chunk, RagIndex } from "../lib/rag/types";
+import { Chunk, RagIndex, ResumeDoc } from "../lib/rag/types";
 import { ROOT, loadEnvLocal } from "./env";
 
 const OUT_DIR = path.join(ROOT, "generated");
@@ -89,7 +90,9 @@ async function main() {
 
   mkdirSync(OUT_DIR, { recursive: true });
   writeFileSync(path.join(OUT_DIR, "corpus.md"), corpus.join("\n\n") + "\n");
-  console.log(`wrote generated/corpus.md`);
+  const resumeDoc: ResumeDoc = { name: resume.name, sections: resume.sections };
+  writeFileSync(path.join(OUT_DIR, "resume.json"), JSON.stringify(resumeDoc, null, 2) + "\n");
+  console.log(`wrote generated/corpus.md, generated/resume.json`);
 
   if (dryRun) {
     for (const c of chunks) {
@@ -108,7 +111,6 @@ async function main() {
     embedModel: EMBED_MODEL,
     dims: EMBED_DIMS,
     builtAt: new Date().toISOString(),
-    resumeSections: resume.sections,
     chunks: chunks.map((c, i) => ({
       ...c,
       // 5 decimals keeps the committed file small with no measurable

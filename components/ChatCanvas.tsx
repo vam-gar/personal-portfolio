@@ -283,8 +283,6 @@ function stepLabel(step: Step): string {
   switch (step.tool) {
     case "search_knowledge":
       return "🔍 searched knowledge base";
-    case "get_resume_section":
-      return "📄 read resume";
     case "get_github_stats":
       return "📊 GitHub stats";
     case "draft_contact_message":

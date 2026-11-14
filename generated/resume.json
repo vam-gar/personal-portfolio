@@ -1,0 +1,25 @@
+{
+  "name": "Vamsi Garlapati",
+  "sections": [
+    {
+      "name": "Contact",
+      "text": "Vamsi Garlapati\nEmail: vagarlapati@gmail.com\ngithub.com/vam-gar: https://github.com/vam-gar\nvamsigarlapati.com: https://vamsigarlapati.vercel.app"
+    },
+    {
+      "name": "Experience",
+      "text": "Freelance Software Developer — Moksha Jewels (Sep. 2026 – Present, Fremont, CA)\n- Shipped a full-stack vendor payables web app (React, Supabase PostgreSQL, Vercel) used daily by a diamond jewelry retailer to track supplier invoices, payments, landed costs, and vendor balances.\n- Worked directly with the store owner to gather requirements, then designed a 10-table relational schema with row-level security, role-based access control, and offline-first sync.\n- Built an OCR invoice-parsing pipeline (pdf.js, Tesseract) and a FIFO payment engine that settles the oldest invoices first through one transactional Postgres function with idempotent upserts.\n\nSoftware Developer — CVS Health (Jul. 2024 – Jul. 2025, Remote)\n- Built production Python REST APIs on Azure Functions for GAILE, CVS's internal conversational AI platform used by hundreds of employees, adding GPT-4 multimodal image analysis and summarization.\n- Worked directly with business stakeholders to gather requirements, demo releases, and fix user-reported issues.\n- Wrote telemetry endpoints storing user ratings, comments, and prompt metadata in Cosmos DB as a human-in-the-loop eval loop; the data drove prompt fixes, surfaced bugs, and prioritized new features.\n- Wrote Python pipelines parsing multiple types of unstructured healthcare and enterprise forms (RFPs, medical records) into structured JSON for downstream LLM workflows, reducing manual data entry.\n- Automated the monthly healthcare data load, validating and backfilling 53,000+ records with unit tests.\n\nArtificial Intelligence & Machine Learning Intern — SVAYO (Jul. 2023 – Sep. 2023, Remote)\n- Trained custom CNN and YOLO models in PyTorch and TensorFlow for facial skin feature detection and acne classification, reaching 92% detection accuracy.\n- Cut false positives by 15% through hyperparameter tuning and iterative model evaluations, and benchmarked R-CNN, Faster R-CNN, and YOLO on latency vs. accuracy for real-time inference."
+    },
+    {
+      "name": "Projects",
+      "text": "Retail Support AI Agent (Oct. 2026)\nTech stack: Python, PydanticAI, Gemini API, Claude API, Streamlit, Pytest\n- Built a customer-facing support AI agent with schema-validated tool calling for orders, returns, and retention offers, enforcing policy guardrails and a human-handoff circuit breaker in code, covered by 51 Pytest tests.\n- Wrote a tau-bench-style eval framework of 12 multi-turn scenarios graded on final database state; iterated prompts through the ADLC, raising task success from 75% to 100% and escalation accuracy from 83% to 100%.\n\nAI Travel Planner (Jun. 2026)\nTech stack: Next.js, React, Gemini API, Tailwind CSS, Zod, React-Leaflet\n- Built a trip planner that validates Gemini itineraries with Zod schemas, retrying or flagging invalid responses.\n- Geocoded each itinerary location and plotted every day's route on an interactive Leaflet map.\n\nVamsiHub (Jun. 2026)\nTech stack: Next.js, TypeScript, Gemini API, Formspree, Tailwind CSS, Vercel\n- Built and deployed a conversational portfolio assistant on Gemini 2.5 Flash, grounding answers in project and resume context through system-prompt engineering, with multi-turn state and off-topic guardrails.\n- Tested it on about 20 prompts, including prompt injection, and tightened its scope after off-topic answers."
+    },
+    {
+      "name": "Technical Skills",
+      "text": "Languages: Python, TypeScript, JavaScript, SQL, Go, Java, C++, C, HTML/CSS\nAI / LLM: AI Agents, Tool Calling, Evals, Prompt Engineering, Structured Outputs, Guardrails, LLM Observability, RAG, PydanticAI, LangChain, OpenAI/Gemini/Claude APIs\nFrameworks: Next.js, React, Node.js, Flask, Streamlit, Tailwind CSS, PyTorch, TensorFlow, Pytest\nData and Infra: PostgreSQL, Supabase, MongoDB, Pinecone, Pandas, NumPy, Docker, Azure, Vercel, Git, Linux"
+    },
+    {
+      "name": "Education",
+      "text": "University of Texas at Austin — Master of Science in Artificial Intelligence (Online/Part Time) (Austin, TX, Expected May 2027)\n\nUniversity of California at Santa Cruz — Bachelor of Science in Computer Science (Santa Cruz, CA, March 2024)"
+    }
+  ]
+}
