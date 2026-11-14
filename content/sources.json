@@ -1,0 +1,18 @@
+{
+  "resume": "content/resume.tex",
+  "repos": [
+    {
+      "repo": "vam-gar/support-agent",
+      "title": "Retail Support AI Agent"
+    },
+    {
+      "repo": "vam-gar/personal-portfolio",
+      "title": "VamsiHub (this portfolio)",
+      "local": "README.md"
+    },
+    {
+      "repo": "vam-gar/ai-travel-planner",
+      "title": "AI Travel Planner"
+    }
+  ]
+}
